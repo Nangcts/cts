@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>GFXFree.Net - All For WebMasters...</title>
+
+    <link rel="stylesheet" type="text/css" href="../dist/css/accordion-slider.min.css" media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="css/examples.css" media="screen" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="../libs/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+    <script type="text/javascript" src="../dist/js/jquery.accordionSlider.min.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // instantiate the accordion
+            $('#example1').accordionSlider({
+                width: 960,
+                height: 400,
+                responsiveMode: 'auto',
+                visiblePanels: 5,
+                closePanelsOnMouseOut: false,
+                autoplay: true
+            });
+
+            // change the responsive mode
+            $('.controls a').click(function(event) {
+                event.preventDefault();
+
+                if ($(this).hasClass('auto')) {
+                    // change the responsive mode to 'auto' and remove the 'custom-responsive' class
+                    $('#example1').removeClass('custom-responsive');
+                    $('#example1').accordionSlider('responsiveMode', 'auto');
+
+                    // change the arrows' visibility
+                    $('.auto-arrow').show();
+                    $('.custom-arrow').hide();
+                } else if ($(this).hasClass('custom')) {
+                    // change the responsive mode to 'custom' and add the 'custom-responsive' 
+                    // class in order to use it as a reference in the CSS code
+                    $('#example1').addClass('custom-responsive');
+                    $('#example1').accordionSlider('responsiveMode', 'custom');
+
+                    // change the arrows' visibility
+                    $('.custom-arrow').show();
+                    $('.auto-arrow').hide();
+                }
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Accordion Slider -->
+
+    <div id="example1" class="accordion-slider">
+        <div class="as-panels">
+
+            <!-- Panel 2 -->
+            <div class="as-panel">
+                <a data-fancybox="gallery" href="http://bqworks.com/accordion-slider/images/image1.jpg">
+                    <img class="as-background" src="../dist/css/images/blank.gif" data-src="http://bqworks.com/accordion-slider/images/image2.jpg" data-retina="http://bqworks.com/accordion-slider/images/image2@2x.jpg" />
+                </a>
+
+                <div class="as-layer as-closed as-white panel-counter" data-position="bottomLeft" data-horizontal="8" data-vertical="8">
+                    Panel 2
+                </div>
+
+                <div class="as-layer" data-position="bottomLeft" data-horizontal="20" data-vertical="20" data-width="100%">
+
+                    <p class="as-layer as-opened as-white as-padding" data-position="bottomLeft" data-show-transition="left" data-hide-transition="up" data-show-delay="400" data-hide-delay="200">
+                        Lorem ipsum
+                    </p>
+
+                    <p class="as-layer as-opened as-black as-padding hide-small-screen" data-position="bottomLeft" data-horizontal="120" data-show-transition="left" data-hide-transition="up" data-show-delay="600" data-hide-delay="100">
+                        dolor sit amet
+                    </p>
+
+                    <p class="as-layer as-opened as-white as-padding hide-small-screen" data-position="bottomLeft" data-horizontal="245" data-show-transition="left" data-hide-transition="up" data-show-delay="800">
+                        consectetur adipisicing elit.
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- End of Accordion Slider -->
+
+    <div class="controls">
+        Change responsive mode:
+        <span class="auto-arrow">&rarr;</span> <a href="#" class="auto">Auto</a> or
+        <span class="custom-arrow">&rarr;</span> <a href="#" class="custom">Custom</a>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="assets/style.css" media="screen"/>
+
+  <script src="assets/jquery-1.11.0.min.js"></script>
+  <script src="assets/script.js"></script>
+  <title>GFXFree.Net - All For WebMasters...</title>
+</head>
+<body>
+  <h1 id="accordion-slider-by-bqworks">
+    <a href="http://GFXFree.Net">GFXFree.Net</a> - Download Unique Web Templates And Scripts
+  </h1>
+  <p> <em><strong>Version 2.6</strong></em> 
+  </p>
+  <p>Hi, and thank you for purchasing Accordion Slider!</p>
+  <p>
+    This guide is meant to help you set up and use the Accordion Slider jQuery plugin. It assumes a basic understanding of HTML, CSS and JavaScript, and will present only information about using this plugin. If you have a question or technical problem that is not covered by this guide, please use
+    <a href="http://support.bqworks.com/home">the official bqworks Support Center</a>
+    .
+  </p>
+  <p>
+    In order to make it easier and faster to look for specific information, this guide is divided into the following chapters:
+  </p>
+  <ul>
+    <li>
+      <a href="#setup">Setup</a>
+      - how to set up Accordion Slider
+    </li>
+    <li>
+      <a href="#javascript-api">JavaScript API</a>
+      - how to customize the accordion using the various JavaScript properties, public methods and callbacks available
+    </li>
+    <li>
+      <a href="#modules">Modules</a>
+      - presentation of the Accordion Slider's  modules
+    </li>
+    <li>
+      <a href="#examples">Examples</a>
+      - contains information about the examples included with the plugin
+    </li>
+    <li>
+      <a href="#troubleshoot">Troubleshoot</a>
+      - solutions to some of the issues that may appear
+    </li>
+    <li>
+      <a href="#updates">Update</a>
+      - how to update Accordion Slider
+    </li>
+  </ul>
+
+  <h1 id="setup">Setup</h1>
+  <h2 id="package-presentation">Package presentation</h2>
+  <p>
+    The package downloaded from CodeCanyon includes several files and folders:
+  </p>
+  <p> <strong>dist</strong>
+  </p>
+  <p>
+    Contains the concatenated and compressed JavaScript and CSS files, which you can use in your project.
+  </p>
+  <p>
+    <strong>src</strong>
+  </p>
+  <p>
+    Contains the uncompressed JavaScript and CSS files. The JavaScript code is separated in a core and several modules, each in its own file. More about this in the Modules chapter.
+  </p>
+  <p>
+    <strong>libs</strong>
+  </p>
+  <p>
+    Contains the jQuery library and other scripts used in the examples.
+  </p>
+  <p>
+    <strong>examples</strong>
+  </p>
+  <p>
+    Contains several examples that showcase some of the accordion's capabilities.
+  </p>
+  <p>
+    <strong>docs</strong>
+  </p>
+  <p>Contains the documentation.</p>
+  <h2 id="installing-and-instantiating-accordion-slider">Installing and instantiating Accordion Slider</h2>
+  <h3 id="1-copying-the-required-files">1. Copying the required files</h3>
+  <p>
+    First of all, you will need to copy the files needed for the plugin. You may want to create separate directories for the JavaScript and CSS files for better organization; for this demonstration, we'll name the two folders 'js' and 'css'.
+  </p>
+  <h4 id="javascript-files">JavaScript files</h4>
+  <p>
+    Copy the Accordion Slider script (jquery.accordionSlider.min.js) from the 'dist/js' folder to your 'js' folder. You will also need to copy the jQuery script (jquery-1.10.1.min.js) from the 'libs' folder, or you can download it from
+    <a href="http://jquery.com/">the official jQuery website</a>
+    .
+  </p>
+  <h4 id="css-files">CSS files</h4>
+  <p>
+    From 'dist/css', copy accordion-slider.min.css and the 'images' folder into your 'css' folder.
+  </p>
+  <h3 id="2-including-the-required-files-in-the-page">2. Including the required files in the page</h3>
+  <p>
+    Once you have copied the files mentioned above, you will need to include them in the header of the HTML page:
+  </p>
+  <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width&quot;&gt;
+
+&lt;title&gt;Page title&lt;/title&gt;
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/accordion-slider.min.css&quot; media=&quot;screen&quot;/&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery-1.10.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.accordionSlider.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+  <h3 id="3-creating-html-markup">3. Creating HTML markup</h3>
+  <p>
+    Inside the
+    <code>&lt;body&gt;</code>
+    tag, you need to specify HTML markup like in the example below:
+  </p>
+  <pre><code>&lt;body&gt;
+    &lt;div id=&quot;my-accordion&quot; class=&quot;accordion-slider&quot;&gt;
+        &lt;div class=&quot;as-panels&quot;&gt;
+            &lt;div class=&quot;as-panel&quot;&gt;
+                &lt;img class=&quot;as-background&quot; src=&quot;path/to/image1.jpg&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;as-panel&quot;&gt;
+                &lt;img class=&quot;as-background&quot; src=&quot;path/to/image2.jpg&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;as-panel&quot;&gt;
+                &lt;img class=&quot;as-background&quot; src=&quot;path/to/image3.jpg&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;as-panel&quot;&gt;
+                &lt;img class=&quot;as-background&quot; src=&quot;path/to/image4.jpg&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;as-panel&quot;&gt;
+                &lt;img class=&quot;as-background&quot; src=&quot;path/to/image5.jpg&quot;/&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+</code></pre>
+
+  <p>
+    This is one of the most basic accordions that you can create. In the "Modules" chapter you will learn how to add richer functionality to the accordion, which will require some additional HTML code.
+  </p>
+  <p>
+    The accordion's main DIV element needs to have the
+    <code>accordion-slider</code>
+    class. Then, inside the main accordion container you create another DIV, which has the
+    <code>as-panels</code>
+    class. This DIV will be a container for the individual panel elements. The panel elements need to be DIV's that have the
+    <code>as-panel</code>
+    class. Inside the panels you can insert any HTML content. If you want to add a background image you need to add to it the
+    <code>as-background</code>
+    class.
+  </p>
+  <p>
+    Please note that all class names are prefixed with
+    <code>as-</code>
+    in order to prevent CSS conflicts with other scripts from the page.
+  </p>
+  <h3 id="4-instantiating-the-accordion">4. Instantiating the accordion</h3>
+  <p>
+    After including the required files in the header and creating the HTML markup, you will need to instantiate the accordion by adding the following code before the
+    <code>&lt;/head&gt;</code>
+    tag:
+  </p>
+  <pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+    jQuery(document).ready(function($) {
+        $('#my-accordion').accordionSlider();
+    });
+&lt;/script&gt;
+</code></pre>
+
+  <p>
+    If you want to change any of the default settings for the accordion, you can also pass various properties to the accordion here - more about that in the
+    <a href="#javascript-api">JavaScript API</a>
+    chapter.
+  </p>
+
+  <h1 id="javascript-api">JavaScript API</h1>
+  <h2 id="1-properties">1. Properties</h2>
+  <p>
+    Accordion Slider can be customized using several properties which are described below. These properties must be passed to the accordion when the accordion is instantiated.
+  </p>
+  <p> <em>Example:</em>
+  </p>
+  <pre><code>$('#my-accordion').accordionSlider({
+    width: 960, 
+    height: 400,
+    responsiveMode: 'custom',
+    visiblePanels: 7,
+    startPanel: 3,
+    closePanelsOnMouseOut: false,
+    shadow: false,
+    panelDistance: 10,
+    autoplay: false,
+    mouseWheel: false
+});
+</code></pre>
+
+  <h4 id="width">width</h4>
+  <p>
+    Sets the width of the accordion. Can be set to a fixed value, like 900 (indicating 900 pixels), or to a percentage value, like '100%'. It's important to note that percentage values need to be specified inside quotes. For fixed values, the quotes are not necessary. Also, please note that, in order to make the accordion responsive, it's not necessary to use percentage values. More about this in the description of the 'responsive' property.
+  </p>
+  <p>
+    <em>Default value:</em>
+    800
+  </p>
+  <h4 id="height">height</h4>
+  <p>
+    Sets the height of the accordion. The same rules available for the 'width' property also apply for the 'height' property.
+  </p>
+  <p>
+    <em>Default value:</em>
+    400
+  </p>
+  <h4 id="responsive">responsive</h4>
+  <p>
+    Makes the accordion responsive. The accordion can be responsive even if the 'width' and/or 'height' properties are set to fixed values. In this situation, 'width' and 'height' will act as the maximum width and height of the accordion.
+  </p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="responsivemode">responsiveMode</h4>
+  <p>
+    Sets the responsive mode of the accordion. Possible values are 'auto' and 'custom'. 'auto' resizes the accordion and all of its elements (e.g., layers, videos) automatically, while 'custom' resizes the only accordion container and panels, and you are given flexibility over the way inner elements (e.g., layers, videos) will respond to smaller sizes. For example, you could use CSS media queries to define different text sizes or to hide certain elements when the accordion becomes smaller, ensuring that all content remains readable without having to zoom in.
+  </p>
+  <p>
+    It's important to note that, if 'auto' responsiveness is used, the 'width' and 'height' need to be set to fixed values, so that the accordion can calculate correctly how much it needs to scale.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'auto'
+  </p>
+  <h4 id="aspectratio">aspectRatio</h4>
+  <p>
+    Sets the aspect ratio of the accordion. The accordion will set its height depending on what value its width has, so that this ratio is maintained. For this reason, the set 'height' might be overridden.
+  </p>
+  <p>
+    This property can be used only when 'responsiveMode' is set to 'custom'. When it's set to 'auto', the 'aspectRatio' needs to remain -1.
+  </p>
+  <p>
+    <em>Default value:</em>
+    -1 (determined by the ratio of the set 'width' and 'height')
+  </p>
+  <h4 id="orientation">orientation</h4>
+  <p>
+    Sets the orientation of the panels. Possible values are 'horizontal' and 'vertical'.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'horizontal'
+  </p>
+  <h4 id="startpanel">startPanel</h4>
+  <p>
+    Indicates which panel will be opened when the accordion loads (0 for the first panel, 1 for the second panel, etc.). If set to -1, no panel will be opened.
+  </p>
+  <p>
+    <em>Default value:</em>
+    -1
+  </p>
+  <h4 id="openedpanelsize">openedPanelSize</h4>
+  <p>
+    Sets the size (width if the accordion's orientation is horizontal; height if the accordion's orientation is vertical) of the opened panel. Possible values are: 'max', which will open the panel to its maximum size, so that all the inner content is visible, a percentage value, like '50%', which indicates the percentage of the total size (width or height, depending on the orientation) of the accordion, or a fixed value.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'max'
+  </p>
+  <h4 id="maxopenedpanelsize">maxOpenedPanelSize</h4>
+  <p>
+    Sets the maximum allowed size of the opened panel. This should be used when the 'openedPanelSize' is set to 'max', because sometimes the maximum size of the panel might be too big and we want to set a limit. The property can be set to a percentage (of the total size of the accordion) or to a fixed value.
+  </p>
+  <p>
+    <em>Default value:</em>
+    '80%'
+  </p>
+  <h4 id="openpanelon">openPanelOn</h4>
+  <p>
+    If set to 'hover', the panels will be opened by moving the mouse pointer over them; if set to 'click', the panels will open when clicked. Can also be set to 'never' to disable the opening of the panels.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'hover'
+  </p>
+  <h4 id="closepanelsonmouseout">closePanelsOnMouseOut</h4>
+  <p>
+    Determines whether the opened panel closes or remains open when the mouse pointer is moved away.
+  </p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="mousedelay">mouseDelay</h4>
+  <p>
+    Sets the delay in milliseconds between the movement of the mouse pointer and the opening of the panel. Setting a delay ensures that panels are not opened if the mouse pointer only moves over them without an intent to open the panel.
+  </p>
+  <p>
+    <em>Default value:</em>
+    200
+  </p>
+  <h4 id="paneldistance">panelDistance</h4>
+  <p>
+    Sets the distance between consecutive panels. Can be set to a percentage or fixed value.
+  </p>
+  <p>
+    <em>Default value:</em>
+    0
+  </p>
+  <h4 id="openpanelduration">openPanelDuration</h4>
+  <p>
+    Determines the duration in milliseconds for the opening of a panel.
+  </p>
+  <p>
+    <em>Default value:</em>
+    700
+  </p>
+  <h4 id="closepanelduration">closePanelDuration</h4>
+  <p>
+    Determines the duration in milliseconds for the closing of a panel.
+  </p>
+  <p>
+    <em>Default value:</em>
+    700
+  </p>
+  <h4 id="pagescrollduration">pageScrollDuration</h4>
+  <p>Indicates the duration of the page scroll.</p>
+  <p>
+    <em>Default value:</em>
+    500
+  </p>
+  <h4 id="pagescrolleasing">pageScrollEasing</h4>
+  <p>
+    Indicates the easing type of the page scroll. Setting a custom value requires the use of a jQuery easing plugin.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'swing'
+  </p>
+  <h4 id="breakpoints">breakpoints</h4>
+  <p>
+    Sets specific breakpoints which allow changing the look and behavior of the accordion (decreasing the number of panels visible per page, shifting the orientation of the panels, etc.) when the page resizes.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>$('#my-accordion').accordionSlider({
+    width: 960, 
+    height: 400,
+    ...
+    breakpoints: {
+        960: {visiblePanels: 5},
+        800: {visiblePanels: 3, orientation: 'vertical', width: 600, height: 500},
+        650: {visiblePanels: 4},
+        500: {visiblePanels: 3, orientation: 'vertical', aspectRatio: 1.2}
+    }
+});
+</code></pre>
+
+  <p>
+    As you can see, the 'breakpoints' property is assigned an object which contains certain browser window widths and the accordion properties that are applied to those specific widths. This is very similar to CSS media queries. However, please note that these custom properties will not be inherited between different breakpoints. The slider's properties will reset to the original values before applying a new set of properties, so if you want a certain property value to persist, you need to set it for each breakpoint.
+  </p>
+  <h4 id="visiblepanels">visiblePanels</h4>
+  <p>
+    Indicates the number of panels visible per page. If set to -1, all the panels will be displayed on one page.
+  </p>
+  <p>
+    <em>Default value:</em>
+    -1
+  </p>
+  <h4 id="startpage">startPage</h4>
+  <p>
+    Indicates which page will be opened when the accordion loads, if the panels are displayed on more than one page.
+  </p>
+  <p>
+    <em>Default value:</em>
+    0
+  </p>
+  <h4 id="shadow">shadow</h4>
+  <p>Indicates if the panels will have a drop shadow effect.</p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="shuffle">shuffle</h4>
+  <p>
+    Indicates if the panels will be shuffled/randomized.
+  </p>
+  <p>
+    <em>Default value:</em>
+    false
+  </p>
+  <h4 id="paneloverlap">panelOverlap</h4>
+  <p>
+    Indicates if the panels will be overlapped. If set to false, the panels will have their width or height set so that they are next to each other, but not overlapped.
+  </p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="autoplay">autoplay</h4>
+  <p>Indicates if the autoplay will be enabled.</p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="autoplaydelay">autoplayDelay</h4>
+  <p>Sets the delay, in milliseconds, of the autoplay cycle.</p>
+  <p>
+    <em>Default value:</em>
+    5000
+  </p>
+  <h4 id="autoplaydirection">autoplayDirection</h4>
+  <p>
+    Sets the direction in which the panels will be opened. Can be set to 'normal' (ascending order) or 'backwards' (descending order).
+  </p>
+  <p>
+    <em>Default value:</em>
+    'normal'
+  </p>
+  <h4 id="autoplayonhover">autoplayOnHover</h4>
+  <p>
+    Indicates if the autoplay will be paused or stopped when the accordion is hovered. Can be set to 'pause', 'stop' or 'none'.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'pause'
+  </p>
+  <h4 id="mousewheel">mouseWheel</h4>
+  <p>
+    Indicates if the accordion will respond to mouse wheel input.
+  </p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="mousewheelsensitivity">mouseWheelSensitivity</h4>
+  <p>
+    Sets how sensitive the accordion will be to mouse wheel input. Lower values indicate stronger sensitivity.
+  </p>
+  <p>
+    <em>Default value:</em>
+    50
+  </p>
+  <h4 id="mousewheeltarget">mouseWheelTarget</h4>
+  <p>
+    Sets what elements will be targeted by the mouse wheel input. Can be set to 'panel' or 'page'. Setting it to 'panel' will indicate that the panels will be scrolled, while setting it to 'page' indicate that the pages will be scrolled.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'panel'
+  </p>
+  <h4 id="keyboard">keyboard</h4>
+  <p>Indicates if the accordion will respond to keyboard input.</p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="keyboardonlyonfocus">keyboardOnlyOnFocus</h4>
+  <p>
+    Indicates if the accordion will respond to keyboard input only if the accordion has focus.
+  </p>
+  <p>
+    <em>Default value:</em>
+    false
+  </p>
+  <h4 id="keyboardtarget">keyboardTarget</h4>
+  <p>
+    Sets what elements will be targeted by the keyboard input. Can be set to 'panel' or 'page'. Setting it to 'panel' will indicate that the panels will be scrolled, while setting it to 'page' indicate that the pages will be scrolled.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'panel'
+  </p>
+  <h4 id="swapbackgroundduration">swapBackgroundDuration</h4>
+  <p>
+    Sets the duration, in milliseconds, of the transition effect.
+  </p>
+  <p>
+    <em>Default value:</em>
+    700
+  </p>
+  <h4 id="fadeoutbackground">fadeOutBackground</h4>
+  <p>
+    Indicates if the main image background will be faded out when the opened/alternative background fades in.
+  </p>
+  <p>
+    <em>Default value:</em>
+    false
+  </p>
+  <h4 id="touchswipe">touchSwipe</h4>
+  <p>Indicates if the touch swipe functionality will be enabled.</p>
+  <p>
+    <em>Default value:</em>
+    true
+  </p>
+  <h4 id="touchswipethreshold">touchSwipeThreshold</h4>
+  <p>
+    Sets how many pixels the distance of the swipe gesture needs to be in order to trigger a page change.
+  </p>
+  <p>
+    <em>Default value:</em>
+    50
+  </p>
+  <h4 id="openpanelvideoaction">openPanelVideoAction</h4>
+  <p>
+    Sets what the video will do when the panel is opened. Can be set to 'playVideo' or 'none'.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'playVideo'
+  </p>
+  <h4 id="closepanelvideoaction">closePanelVideoAction</h4>
+  <p>
+    Sets what the video will do when the panel is closed. Can be set to 'pauseVideo' or 'stopVideo.'
+  </p>
+  <p>
+    <em>Default value:</em>
+    'pauseVideo'
+  </p>
+  <h4 id="playvideoaction">playVideoAction</h4>
+  <p>
+    Sets what the accordion will do when a video starts playing. Can be set to 'stopAutoplay' or 'none'.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'stopAutoplay'
+  </p>
+  <h4 id="pausevideoaction">pauseVideoAction</h4>
+  <p>
+    Sets what the accordion will do when a video is paused. Can be set to 'startAutoplay' or 'none'.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'none'
+  </p>
+  <h4 id="endvideoaction">endVideoAction</h4>
+  <p>
+    Sets what the accordion will do when a video ends. Can be set to 'startAutoplay', 'nextPanel', 'replayVideo' or 'none'.
+  </p>
+  <p>
+    <em>Default value:</em>
+    'none'
+  </p>
+  <h4 id="xmlsource">XMLSource</h4>
+  <p>
+    Sets the XML source for the accordion. Can be set to a path to an XML file or to an XML string.
+  </p>
+  <h4 id="jsonsource">JSONSource</h4>
+  <p>
+    Sets the JSON source for the accordion. Can be set to a path to a JSON file or to a JSON string.
+  </p>
+  <h2 id="2-public-methods">2. Public methods</h2>
+  <p>
+    The public methods below allow you to manipulate the accordion using external controls. There are two ways of calling a public method.
+  </p>
+  <p>
+    The first way is by calling the
+    <code>accordionSlider</code>
+    plugin and passing the name of the method and additional arguments:
+  </p>
+  <pre><code>$('#my-accordion').accordionSlider('openPanel', 3);</code></pre>
+
+  <p>
+    The first argument represents the name of the method and the second argument represents the value which will be applied. Please note that some methods don't have a second argument. For example:
+  </p>
+  <pre><code>$('#my-accordion').accordionSlider('nextPanel');</code></pre>
+
+  <p>
+    The second way is by getting a reference to the AccordionSlider instance and calling the method on the instance:
+  </p>
+  <pre><code>// get a reference to the AccordionSlider instance
+var accordion = $('#my-accordion').data('accordionSlider');
+
+console.log(accordion.getTotalPanels());
+
+accordion.gotoPage(2);
+</code></pre>
+
+  <p>
+    This way of calling a public method is mandatory when you use public methods that return data:
+    <code>getPanelAt</code>
+    ,
+    <code>getCurrentIndex</code>
+    ,
+    <code>getTotalPanels</code>
+    ,
+    <code>getVisiblePanels</code>
+    ,
+    <code>getTotalPages</code>
+    and
+    <code>getCurrentPage</code>
+    , but it can be used with all the other public methods as well.
+  </p>
+  <p>Here is the list of available public methods:</p>
+  <h4 id="getpanelatindex">getPanelAt(index)</h4>
+  <p>
+    Gets all the data of the panel at the specified index. Returns an object that contains all the data specified for that panel.
+  </p>
+  <h4 id="getcurrentindex">getCurrentIndex()</h4>
+  <p>Gets the index of the current panel.</p>
+  <h4 id="gettotalpanels">getTotalPanels()</h4>
+  <p>Gets the total number of panels.</p>
+  <h4 id="nextpanel">nextPanel()</h4>
+  <p>Opens the next panel.</p>
+  <h4 id="previouspanel">previousPanel()</h4>
+  <p>Opens the previous panel.</p>
+  <h4 id="openpanelindex">openPanel(index)</h4>
+  <p>Opens the panel at the specified index.</p>
+  <h4 id="closepanels">closePanels()</h4>
+  <p>Closes all the panels.</p>
+  <h4 id="getvisiblepanels">getVisiblePanels()</h4>
+  <p>Gets the number of visible panels.</p>
+  <h4 id="gettotalpages">getTotalPages()</h4>
+  <p>Gets the number of pages.</p>
+  <h4 id="getcurrentpage">getCurrentPage()</h4>
+  <p>Gets the index of the page currently displayed.</p>
+  <h4 id="gotopageindex">gotoPage(index)</h4>
+  <p>Scrolls to the specified page.</p>
+  <h4 id="nextpage">nextPage()</h4>
+  <p>Goes to the next page.</p>
+  <h4 id="previouspage">previousPage()</h4>
+  <p>Goes to the previous page.</p>
+  <h4 id="oneventtype-callback">on(eventType, callback)</h4>
+  <p>
+    Adds an event listener to the accordion. More details about the use of this method will be presented in the 'Callbacks' chapter.
+  </p>
+  <h4 id="offeventtype">off(eventType)</h4>
+  <p>Removes an event listener from the accordion.</p>
+  <h4 id="destroy">destroy()</h4>
+  <p>
+    Destroys an accordion by removing all the visual elements and functionality added by the plugin. Basically, it leaves the accordion in the state it was before the plugin was instantiated.
+  </p>
+  <h4 id="update">update()</h4>
+  <p>
+    This is called by the plugin automatically when a property is changed. You can call this manually in order to refresh the accordion after changing its HTML, like removing or adding panels.
+  </p>
+  <h4 id="removepanels">removePanels()</h4>
+  <p>Removes all the panels.</p>
+  <h4 id="resize">resize()</h4>
+  <p>
+    This is called by the plugin automatically, when the browser window is resized. You can also call it manually if you find it necessary to have the accordion resize itself.
+  </p>
+  <h2 id="3-callbacks">3. Callbacks</h2>
+  <p>
+    Callbacks (or events) are used to detect when certain actions take place. The callbacks can be added when the accordion is instantiated, or at a later time.
+  </p>
+  <p>
+    <em>Examples:</em>
+  </p>
+  <pre><code>$('#my-accordion').accordionSlider({
+    width: 1200, 
+    height: 400,
+    responsiveMode: 'custom',
+    panelOpenComplete: function(event) {
+        console.log(event.index);
+    },
+    panelsCloseComplete: function(event) {
+        console.log(event.previousIndex);
+    }
+});
+
+$('#my-accordion').on('panelOpen', function(event) {
+    console.log(event.index);
+})
+</code></pre>
+
+  <p>
+    As you can notice, the callback functions have an "event" parameter which contains some information about that event.
+  </p>
+  <p>The list of available events:</p>
+  <h4 id="init">init</h4>
+  <p>Triggered after the accordion was created.</p>
+  <h4 id="update_1">update</h4>
+  <p>
+    Triggered when the 'update' method is called, either automatically or manually.
+  </p>
+  <h4 id="accordionmouseover">accordionMouseOver</h4>
+  <p>Triggered when the mouse pointer moves over the accordion.</p>
+  <h4 id="accordionmouseout">accordionMouseOut</h4>
+  <p>Triggered when the mouse pointer leaves the accordion.</p>
+  <h4 id="panelclick">panelClick</h4>
+  <p>Triggered when a panel is clicked. Returned data:</p>
+  <ul>
+    <li>index: the index of the clicked panel</li>
+  </ul>
+  <h4 id="panelmouseover">panelMouseOver</h4>
+  <p>
+    Triggered when the mouse pointer moves over a panel. Returned data:
+  </p>
+  <ul>
+    <li>
+      index: the index of the panel over which the mouse pointer has moved
+    </li>
+  </ul>
+  <h4 id="panelmouseout">panelMouseOut</h4>
+  <p>
+    Triggered when the mouse pointer leaves a panel. Returned data:
+  </p>
+  <ul>
+    <li>
+      index: the index of panel from which the mouse pointer has moved away
+    </li>
+  </ul>
+  <h4 id="panelopen">panelOpen</h4>
+  <p>Triggered when a panel is opened. Returned data:</p>
+  <ul>
+    <li>index: the index of the opened panel</li>
+    <li>previousIndex: the index of the previously opened panel</li>
+  </ul>
+  <h4 id="panelsclose">panelsClose</h4>
+  <p>Triggered when the panels are closed. Returned data:</p>
+  <ul>
+    <li>previousIndex: the index of the previously opened panel</li>
+  </ul>
+  <h4 id="pagescroll">pageScroll</h4>
+  <p>
+    Triggered when the accordion scrolls to another page. Returned data:
+  </p>
+  <ul>
+    <li>index: the index of the current page</li>
+  </ul>
+  <h4 id="panelopencomplete">panelOpenComplete</h4>
+  <p>
+    Triggered when the opening of a panel is completed. Returned data:
+  </p>
+  <ul>
+    <li>index: the index of the opened panel</li>
+  </ul>
+  <h4 id="panelsclosecomplete">panelsCloseComplete</h4>
+  <p>
+    Triggered when the closing of the panels is completed. Returned data:
+  </p>
+  <ul>
+    <li>previousIndex: the index of the previously opened panel</li>
+  </ul>
+  <h4 id="pagescrollcomplete">pageScrollComplete</h4>
+  <p>
+    Triggered when the scroll to a page is completed. Returned data:
+  </p>
+  <ul>
+    <li>index: the index of the current page</li>
+  </ul>
+  <h4 id="breakpointreach">breakpointReach</h4>
+  <p>Triggered when a breakpoint is reached. Returned data:</p>
+  <ul>
+    <li>size: the specified size that was reached</li>
+    <li>settings: the settings specified for the current size</li>
+  </ul>
+  <h4 id="videoplay">videoPlay</h4>
+  <p>Triggered when a video starts playing.</p>
+  <h4 id="videopause">videoPause</h4>
+  <p>Triggered when a video is paused.</p>
+  <h4 id="videoend">videoEnd</h4>
+  <p>Triggered when a video ends.</p>
+
+  <h1 id="modules">Modules</h1>
+  <h2 id="introduction">Introduction</h2>
+  <p>
+    Accordion Slider has a modular architecture. It consists of a core and several optional modules. The advantage of modular architecture is that it allows you to load only the code you need and leave out what you don't need, resulting in a smaller file size for the script and, theoretically, better performance, although, practically, the performance impact is not noticeable even if you load all the modules. There are also advantages for developers, because the plugin is easier to extend and maintain.
+  </p>
+  <p>
+    The jquery.accordionSlider.js file (and its minified version, jquery.accordionSlider.min.js) from the 'dist' folder includes all the modules, so that you can have quick and easy access to all the available features. However, if you would like to build a custom file, and you're familiar enough with JavaScript, please see the 'Building a custom file' chapter. Even if you don't want to construct a custom file, please go through the 'Modules presentation' chapter in order to learn how to use the Accordion Slider's features.
+  </p>
+  <h2 id="building-a-custom-file">Building a custom file</h2>
+  <p>
+    You can find all the modules, in separate files, in the 'src/js' folder. What you need to do is copy the code from those files in a separate file, starting with the jquery.accordionSlider.core.js file. It's important that the jquery.accordionSlider.core.js code is the first block of code in your script. The order of the optional modules is not important. After you have created your script, you can obtain a minified version by using Google's
+    <a href="http://closure-compiler.appspot.com/home">Closure Compiler</a>
+    .
+  </p>
+  <h2 id="modules-presentation">Modules presentation</h2>
+  <h3 id="1-touch-swipe">1. Touch Swipe</h3>
+  <p>
+    Although it's an optional module, you will most likely want to include it in all your projects, because it enables touch functionality for touch screen devices. The module also adds mouse drag functionality (on non-touch screen devices) when the accordion has more than one page.
+  </p>
+  <h3 id="2-autoplay">2. Autoplay</h3>
+  <p>
+    Adds autoplay functionality. In the
+    <a href="#javascript-api">Javascript API</a>
+    chapter, you can see the properties that allow you to control this module. If you do include this module but want to disable the autoplay, you can set the 'autoplay' property to false.
+  </p>
+  <h3 id="3-mouse-wheel">3. Mouse Wheel</h3>
+  <p>Enables the accordion to respond to mouse wheel input.</p>
+  <h3 id="4-keyboard">4. Keyboard</h3>
+  <p>
+    Adds keyboard navigation support. The next panel can be opened by pressing the right arrow key and the previous panel can be opened by pressing the left arrow key. Also, the Enter key will open the link attached to the background or opened background images.
+  </p>
+  <p>
+    By default, the accordion will respond to keyboard input all the time, not only when the accordion has focus. If you would like it to respond only when the accordion is in focus, you need to add the
+    <code>tabindex=0</code>
+    attribute to the main accordion
+    <code>div</code>
+    container:
+  </p>
+  <pre><code>&lt;div id=&quot;my-accordion&quot; class=&quot;accordion-slider&quot; tabindex=&quot;0&quot;&gt;
+    ...
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    Also, you can add the
+    <code>tabindex=-1</code>
+    attribute to all anchor elements that are inside the accordion, in order to not allow these elements to get focus.
+  </p>
+  <h3 id="5-layers">5. Layers</h3>
+  <p>
+    Adds support for layers, which are blocks of text or HTML content that can easily be positioned, sized or animated.
+  </p>
+  <p>
+    Layers have several predefined styles and support various settings, all of which define the layers' look and behavior. The following example shows how to create two basic layers inside a panel. These layers will be static and we won't add any styling to them.
+  </p>
+  <pre><code>&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/image1.jpg&quot;/&gt;
+    &lt;h3 class=&quot;as-layer&quot;&gt;
+        Lorem ipsum dolor sit amet
+    &lt;/h3&gt;
+    &lt;p class=&quot;as-layer&quot;&gt;
+        consectetur adipisicing elit
+    &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    As you can see above, the layers need to have the
+    <code>as-layer</code>
+    class, but they can be any HTML element: paragraphs, headings or just DIV elements.
+  </p>
+  <p>
+    Here is an example that adds some styling and animates the layers:
+  </p>
+  <pre><code>&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/image1.jpg&quot;/&gt;
+    &lt;h3 class=&quot;as-layer as-closed as-black&quot;
+        data-position=&quot;bottomLeft&quot; data-horizontal=&quot;10%&quot;
+        data-show-transition=&quot;left&quot; data-show-delay=&quot;300&quot; data-hide-transition=&quot;right&quot;&gt;
+        Lorem ipsum dolor sit amet
+    &lt;/h3&gt;
+    &lt;p class=&quot;as-layer as-opened as-white as-padding&quot;
+        data-width=&quot;200&quot; data-horizontal=&quot;center&quot; data-vertical=&quot;40%&quot;
+        data-show-transition=&quot;down&quot; data-hide-transition=&quot;up&quot;&gt;
+        consectetur adipisicing elit
+    &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    There are several predefined classes that can be passed to layers in order to style them. The position, size and animations are set using data attributes. For a better organization of the HTML code, I added the classes, the attributes that set the position and size, and the attributes that set the animation on separate lines, but you can add them in a single line if you want to.
+  </p>
+  <p>
+    This is the list of predefined classes that can be passed to the layers:
+  </p>
+  <h5 id="as-opened">as-opened</h5>
+  <p>Sets the layer to be visible only when the panel is opened.</p>
+  <h5 id="as-closed">as-closed</h5>
+  <p>Sets the layer to be visible only when the panel is closed.</p>
+  <h5 id="as-black">as-black</h5>
+  <p>
+    Adds a black and transparent background and makes the font color white.
+  </p>
+  <h5 id="as-white">as-white</h5>
+  <p>
+    Adds a white and transparent background and makes the font color black.
+  </p>
+  <h5 id="as-padding">as-padding</h5>
+  <p>Adds a 10 pixel padding to the layer.</p>
+  <h5 id="as-rounded">as-rounded</h5>
+  <p>Makes the layer's corners rounded.</p>
+  <p>
+    In the accordion's CSS file, accordion-slider.css, you can edit the properties specified for the above classes. For example, you can set the padding to 5 pixels instead of 10 pixels, or you can change the transparency of the black and white backgrounds. However, it's a best practice to add your custom styling in a separate CSS file instead of modifying the accordion's CSS.
+  </p>
+  <p>This is the list of data attributes:</p>
+  <h5 id="data-width">data-width</h5>
+  <p>
+    Sets the width of the layer. Can be set to a fixed or percentage value. If it's not set, the layer's width will adapt to the width of the inner content.
+  </p>
+  <h5 id="data-height">data-height</h5>
+  <p>
+    Sets the height of the layer. Can be set to a fixed or percentage value. If it's not set, the layer's height will adapt to the height of the inner content.
+  </p>
+  <h5 id="data-depth">data-depth</h5>
+  <p>Sets the depth (z-index, in CSS terms) of the layer.</p>
+  <h5 id="data-position">data-position</h5>
+  <p>
+    Sets the position of the layer. Can be set to 'topLeft' (which is the default value), 'topRight', 'bottomLeft' or 'bottomRight'.
+  </p>
+  <h5 id="data-horizontal">data-horizontal</h5>
+  <p>
+    Sets the horizontal position of the layer, using the value specified for data-position as a reference point. Can be set to a fixed value, percentage value or to 'center'.
+  </p>
+  <h5 id="data-vertical">data-vertical</h5>
+  <p>
+    Sets the vertical position of the layer, using the value specified for data-position as a reference point. Can be set to a fixed value, percentage value or to 'center'.
+  </p>
+  <h5 id="data-show-transition">data-show-transition</h5>
+  <p>
+    Sets the transition of the layer when it appears in the panel. Can be set to 'left', 'right', 'up' or 'down', these values describing the direction in which the layer will move when it appears.
+  </p>
+  <h5 id="data-show-offset">data-show-offset</h5>
+  <p>
+    Sets an offset for the position of the layer from which the layer will be animated towards the final position when it appears in the panel. Needs to be set to a fixed value.
+  </p>
+  <h5 id="data-show-duration">data-show-duration</h5>
+  <p>Sets the duration of the show transition.</p>
+  <h5 id="data-show-delay">data-show-delay</h5>
+  <p>
+    Sets a delay for the show transition. This delay starts from the moment when the panel starts opening.
+  </p>
+  <h5 id="data-hide-transition">data-hide-transition</h5>
+  <p>
+    Sets the transition of the layer when it disappears from the panel. Can be set to 'left', 'right', 'up' or 'down', these values describing the direction in which the layer will move when it disappears.
+  </p>
+  <h5 id="data-hide-offset">data-hide-offset</h5>
+  <p>
+    Sets an offset for the position of the layer towards which the layer will be animated from the original position when it disappears from the panel. Needs to be set to a fixed value.
+  </p>
+  <h5 id="data-hide-duration">data-hide-duration</h5>
+  <p>Sets the duration of the hide transition.</p>
+  <h5 id="data-hide-delay">data-hide-delay</h5>
+  <p>
+    Sets a delay for the hide transition. This delay starts from the moment when the panel starts closing.
+  </p>
+  <p>
+    The layers are animated using CSS3 transitions in most browsers. In IE9 and IE8 (where CSS3 transitions are not supported), the layers will only fade in/out, and in IE7 and older, the layers will appear without any animation.
+  </p>
+  <p>
+    This module is showcased in example1.html, example3.html and example4.html.
+  </p>
+  <h3 id="6-lazy-loading">6. Lazy Loading</h3>
+  <p>
+    Enables the accordion to load images only when they are in view. It makes sense to use it when there are multiple pages in the accordion, so that images from other pages are not loaded until the user navigates to that page.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image1.jpg&quot;/&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;a href=&quot;http://bqworks.com&quot;&gt;
+        &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image2.jpg&quot;/&gt;
+    &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image3.jpg&quot;/&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    The
+    <code>src</code>
+    attribute of the image will point to a placeholder image, and the actual image will be specified in the
+    <code>data-src</code>
+    attribute. When the panel becomes visible, the placeholder image will be replaced by the actual image. You can use the placeholder image that comes with the accordion, or you can create your own placeholder image. The bundled placeholder image is located in dist/css/images/blank.gif and it's a 1 pixel by 1 pixel blank image.
+  </p>
+  <p>This module is showcased in example1.html and example3.html.</p>
+  <h3 id="7-retina">7. Retina</h3>
+  <p>
+    Allows you to specify an alternative image for screens with high PPI (pixels per inch), like the 'Retina' screens from Apple devices. Please note that this module will work for any screen that has high PPI, not only for the 'Retina' screens.
+  </p>
+  <p>
+    The high resolution image needs to be specified in the
+    <code>data-retina</code>
+    attribute, as seen below:
+  </p>
+  <pre><code>&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/image1.jpg&quot; data-retina=&quot;path/to/image1@2x.jpg&quot;/&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image2.jpg&quot; data-retina=&quot;path/to/image2@2x.jpg&quot;/&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;a href=&quot;http://bqworks.com&quot;&gt;
+        &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image3.jpg&quot; data-retina=&quot;path/to/image3@2x.jpg&quot;/&gt;
+    &lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    It's a naming convention to add the '@2x' suffix for the high resolution version of the image.
+  </p>
+  <p>
+    As you can see, it's possible to use lazy loading and high resolution images at the same time.
+  </p>
+  <p>
+    This module is showcased in example1.html, example2.html and example3.html.
+  </p>
+  <h3 id="8-deep-linking">8. Deep Linking</h3>
+  <p>
+    Provides the possibility to link to a specific panel in the accordion. You can use this to have the accordion opened at a specific panel when the page loads or to load a specific panel later at a later time.
+  </p>
+  <p>
+    The hash that needs to be appended to the URL consists of the 'id' attribute of the accordion and the index of the panel separated by a slash character (/). For example,
+    <code>http://domain.com/page#my-accordion/0</code>
+    will open the first panel (because panel indexes start with 0) in the accordion that has the 'id' set to 'my-accordion'.
+  </p>
+  <p>
+    It's also possible to specify the 'id' attribute of the panel instead of its index.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;div id=&quot;my-accordion&quot; class=&quot;accordion-slider&quot;&gt;
+    &lt;div class=&quot;as-panels&quot;&gt;
+        &lt;div class=&quot;as-panel&quot;&gt;
+            &lt;img class=&quot;as-background&quot; src=&quot;path/to/image1.jpg&quot;/&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;my-panel&quot; class=&quot;as-panel&quot;&gt;
+            &lt;img class=&quot;as-background&quot; src=&quot;path/to/image2.jpg&quot;/&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;as-panel&quot;&gt;
+            &lt;img class=&quot;as-background&quot; src=&quot;path/to/image3.jpg&quot;/&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    In order to open the second panel, you can use either
+    <code>http://domain.com/page#my-accordion/1</code>
+    or
+    <code>http://domain.com/page#my-accordion/my-panel</code>
+    .
+  </p>
+  <p>This module is showcased in example4.html.</p>
+  <h3 id="9-swap-background">9. Swap Background</h3>
+  <p>
+    Allows you to set an alternative background image that will appear when the panel is opened. The alternative image must be added in a separate
+    <code>img</code>
+    element and it must be given the
+    <code>as-background-opened</code>
+    class.
+  </p>
+  <pre><code>&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/image1.jpg&quot;/&gt;
+    &lt;img class=&quot;as-background-opened&quot; src=&quot;path/to/alt_image1.jpg&quot;/&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image2.jpg&quot; data-retina=&quot;path/to/image2@2x.jpg&quot;/&gt;
+    &lt;img class=&quot;as-background-opened&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/alt_image2.jpg&quot; data-retina=&quot;path/to/alt_image2@2x.jpg&quot;/&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;as-panel&quot;&gt;
+    &lt;img class=&quot;as-background&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/image3.jpg&quot; data-retina=&quot;path/to/image3@2x.jpg&quot;/&gt;
+    &lt;a href=&quot;http://bqworks.com&quot;&gt;
+        &lt;img class=&quot;as-background-opened&quot; src=&quot;path/to/blank.gif&quot; data-src=&quot;path/to/alt_image3.jpg&quot; data-retina=&quot;path/to/alt_image3@2x.jpg&quot;/&gt;
+    &lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    As you can see, the alternative image can be lazy loaded and can have a high resolution version as well.
+  </p>
+  <p>
+    Please note that the size of the 'opened' image should be equal or bigger than the size of the default image, in order to prevent parts of the default image to be visible behind the 'opened' image when the panel is opened.
+  </p>
+  <p>This module is showcased in example2.html.</p>
+  <h3 id="10-smart-video">10. Smart Video</h3>
+  <p>
+    Provides automatic control of the videos loaded inside the panels. For example, the video will pause automatically when the panel closes, or the autoplay, if enabled, will stop when a video starts playing. Inside the accordion, videos can be added in the main panel container or inside layers.
+  </p>
+  <p>
+    The video types or providers supported by this module are: YouTube, Vimeo, HTML5, Video.js and SublimeVideo.
+  </p>
+  <p>
+    In order to have a video automatically controlled by the accordion, the video must have the
+    <code>as-video</code>
+    class. Also, there are some provider-specific requirements for the videos, as presented below.
+  </p>
+  <h5 id="youtube">YouTube</h5>
+  <p>
+    The videos need to have the
+    <code>enablejsapi=1</code>
+    parameter appended to the URL of the video. It's also recommended to append the
+    <code>wmode=opaque</code>
+    parameter. The parameters need to be delimited by
+    <code>&amp;amp;</code>
+    .
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;iframe class=&quot;as-video&quot; src=&quot;http://www.youtube.com/embed/msIjWthwWwI?enablejsapi=1&amp;amp;wmode=opaque&quot; width=&quot;500&quot; height=&quot;350&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+</code></pre>
+
+  <h5 id="vimeo">Vimeo</h5>
+  <p>
+    The videos need to have the
+    <code>api=1</code>
+    parameter appended to the URL of the video.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;iframe class=&quot;as-video&quot; src=&quot;http://player.vimeo.com/video/43401199?api=1&quot; width=&quot;500&quot; height=&quot;350&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+</code></pre>
+
+  <h5 id="html5">HTML5</h5>
+  <p>
+    Simple HTML5 videos don't need any preparations other than having the
+    <code>as-video</code>
+    class.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;video class=&quot;as-video&quot; poster=&quot;path/to/poster.jpg&quot; width=&quot;500&quot; height=&quot;350&quot; controls=&quot;controls&quot; preload=&quot;none&quot;&gt;
+    &lt;source src=&quot;path/to/video.mp4&quot; type=&quot;video/mp4&quot;/&gt;
+    &lt;source src=&quot;path/to/video.ogv&quot; type=&quot;video/ogg&quot;/&gt;
+&lt;/video&gt;
+</code></pre>
+
+  <h5 id="videojs">Video.js</h5>
+  <p>
+    Each Video.js video must have a unique 'id' attribute. Also, because the Video.js library changes the HTML markup of the video, we'll create a container element and add the
+    <code>as-video</code>
+    class to that element instead. Also, the container element must have the
+    <code>data-video-id</code>
+    attribute, which is used to specify the 'id' attribute of the video.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;div class=&quot;as-video&quot; data-videojs-id=&quot;video1&quot;&gt;
+    &lt;video id=&quot;video1&quot; class=&quot;video-js vjs-default-skin&quot; poster=&quot;path/to/poster.jpg&quot; width=&quot;500&quot; height=&quot;350&quot; controls=&quot;controls&quot; preload=&quot;none&quot;
+            data-setup=&quot;{}&quot;&gt;
+        &lt;source src=&quot;path/to/video.mp4&quot; type=&quot;video/mp4&quot;/&gt;
+        &lt;source src=&quot;path/to/video.ogv&quot; type=&quot;video/ogg&quot;/&gt;
+    &lt;/video&gt;
+&lt;/div&gt;
+</code></pre>
+
+  <p>
+    Please note that, in order to use Video.js, you need to load the Video.js JavaScript and CSS files in your page. More information about how to use Video.js, in general, can be found on the
+    <a href="http://www.videojs.com/">official Video.js page</a>
+    .
+  </p>
+  <h5 id="sublimevideo">SublimeVideo</h5>
+  <p>
+    Each SublimeVideo instance must have a unique 'id' attribute.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;video id=&quot;video2&quot; class=&quot;as-video sublime&quot; poster=&quot;path/to/poster.jpg&quot; width=&quot;500&quot; height=&quot;350&quot; controls=&quot;controls&quot; preload=&quot;none&quot;&gt;
+    &lt;source src=&quot;path/to/video.mp4&quot; type=&quot;video/mp4&quot;/&gt;
+    &lt;source src=&quot;path/to/video.ogv&quot; type=&quot;video/ogg&quot;/&gt;
+&lt;/video&gt;
+</code></pre>
+
+  <p>
+    Please note that, in order to use SublimeVideo, you will also need to load a script in your page which you need to download from the SublimeVideo page. More information about how to use SublimeVideo, in general, can be found on the
+    <a href="http://www.sublimevideo.net/">official SublimeVideo page</a>
+    .
+  </p>
+  <h5 id="notes">Notes</h5>
+  <ul>
+    <li>
+      <p>
+        Most of the videos will work correctly only if the page is on a server. It can be a local server or an online server.
+      </p>
+    </li>
+    <li>
+      <p>
+        iOS doesn't allow videos to play automatically, so an initial user action is required in order to play the video. After the initial action, the videos will be controlled automatically.
+      </p>
+    </li>
+    <li>
+      <p>
+        When pausing a YouTube video automatically, on iOS, the video will be stopped instead, because only pausing it makes the entire region that the video occupies unresponsive to user input. For example, if another video slides in over the YouTube video, we won't be able to play this video because the controls will be unresponsive. However, this doesn't occur if the YouTube video is stopped instead of paused, so the accordion does this.
+      </p>
+    </li>
+    <li>
+      <p>
+        The control bar of SublimeVideo videos will become unresponsive on iOS if the 'auto' responsive mode is used. It seems that, in general, scaling SublimeVideo using the CSS3 'transform' property will make them unresponsive to user input.
+      </p>
+    </li>
+  </ul>
+  <p>This module is showcased in example4.html.</p>
+  <h3 id="11-xml">11. XML</h3>
+  <p>
+    Allows you to use an XML file or XML string as a source for the accordion's content. The path of the XML file or the XML string must be passed to the 'XMLSource' property.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>$('#example-xml').accordionSlider({
+    XMLSource: 'path/to/file.xml',
+    width: 960, 
+    height: 400
+});
+</code></pre>
+
+  <p>
+    In the accordion's HTML code, you will need to create only the main container DIV. The rest will be created automatically, based on the XML data.
+  </p>
+  <pre><code>&lt;div id=&quot;example-xml&quot; class=&quot;accordion-slider&quot;&gt;&lt;/div&gt;
+</code></pre>
+
+  <p>
+    The syntax used in XML is similar to that used in HTML. Some differences would be that the
+    <code>as-</code>
+    prefix is not used anymore for classes, the
+    <code>data-</code>
+    prefix is not used for attributes, and using the dash (-) as a delimiter is replaced with using the CamelCase notation.
+  </p>
+  <p>These are the node names that need to be used:</p>
+  <ul>
+    <li>
+      <code>accordion</code>
+      : for the root node
+    </li>
+    <li>
+      <code>panel</code>
+      : for panel nodes
+    </li>
+    <li>
+      <code>background</code>
+      : for background images
+    </li>
+    <li>
+      <code>backgroundLink</code>
+      : for links attached to background images
+    </li>
+    <li>
+      <code>backgroundRetina</code>
+      : for alternative, high resolution images
+    </li>
+    <li>
+      <code>backgroundOpened</code>
+      : for alternative images that will appear when the panel is opened
+    </li>
+    <li>
+      <code>backgroundOpenedLink</code>
+      : for links attached to the opened background image
+    </li>
+    <li>
+      <code>backgroundOpenedRetina</code>
+      : for retina version of the opened background image
+    </li>
+    <li>
+      <code>layer</code>
+      : for layer nodes
+    </li>
+  </ul>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;accordion&gt;
+    &lt;panel&gt;
+        &lt;background&gt;path/to/image1.jpg&lt;/background&gt;
+        &lt;backgroundRetina&gt;path/to/image1@2x.jpg&lt;/backgroundRetina&gt;
+        &lt;backgroundOpened&gt;path/to/alt_image1.jpg&lt;/background&gt;
+        &lt;backgroundOpenedRetina&gt;path/to/alt_image1@2x.jpg&lt;/backgroundRetina&gt;
+        &lt;backgroundLink&gt;http://bqworks.com/&lt;/backgroundLink&gt;
+    &lt;/panel&gt;
+
+    &lt;panel&gt;
+        &lt;background&gt;path/to/image2.jpg&lt;/background&gt;
+        &lt;backgroundRetina&gt;path/to/image2@2x.jpg&lt;/backgroundRetina&gt;
+        &lt;backgroundOpened&gt;path/to/alt_image2.jpg&lt;/background&gt;
+        &lt;backgroundOpenedRetina&gt;path/to/alt_image2@2x.jpg&lt;/backgroundRetina&gt;
+        &lt;backgroundOpenedLink&gt;http://bqworks.com/&lt;/backgroundLink&gt;
+    &lt;/panel&gt;
+&lt;/accordion&gt;
+</code></pre>
+
+  <p>
+    If you want to use lazy loading, you simply need to add the
+    <code>lazyLoading</code>
+    attribute to the root
+    <code>accordion</code>
+    node and specify the path of the placeholder image.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>&lt;accordion lazyLoading=&quot;path/to/blank.gif&quot;&gt;
+    ...
+&lt;/accordion&gt;
+</code></pre>
+
+  <p>
+    When using layers, the equivalent for the
+    <code>class</code>
+    attribute is the
+    <code>style</code>
+    attribute. As noted before, the
+    <code>as-</code>
+    and
+    <code>data-</code>
+    prefixes are not used anymore and the names of the attributes use a CamelCase notation. It's important to already be familiar with the 'Layers' module before learning how to use layers in XML. The available styles and attributes are enumerated below, but check the presentation of the 'Layers' module for a description of these.
+  </p>
+  <h5 id="styles">Styles</h5>
+  <ul>
+    <li>opened</li>
+    <li>closed</li>
+    <li>black</li>
+    <li>white</li>
+    <li>padding</li>
+    <li>rounded.</li>
+  </ul>
+  <h5 id="attributes">Attributes</h5>
+  <ul>
+    <li>width</li>
+    <li>height</li>
+    <li>depth</li>
+    <li>position</li>
+    <li>horizontal</li>
+    <li>vertical</li>
+    <li>showTransition</li>
+    <li>showOffset</li>
+    <li>showDuration</li>
+    <li>showDelay</li>
+    <li>hideTransition</li>
+    <li>hideOffset</li>
+    <li>hideDuration</li>
+    <li>hideDelay</li>
+  </ul>
+  <p>
+    This module is showcased in example_xml.html, which is the XML version of example1.html. Please check the XML file created for this example, accordion.xml, to see how layers can be created in XML.
+  </p>
+  <h3 id="12-json">12. JSON</h3>
+  <p>
+    Allows you to use a JSON file or JSON string as a source for the accordion's content. The path of the JSON file or the JSON string must be passed to the 'JSONSource' property.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>$('#example-json').accordionSlider({
+    JSONSource: 'path/to/file.json',
+    width: 960, 
+    height: 400
+});
+</code></pre>
+
+  <p>
+    In the accordion's HTML code, you will need to create only the main container DIV. The rest will be created automatically, based on the JSON data.
+  </p>
+  <pre><code>&lt;div id=&quot;example-json&quot; class=&quot;accordion-slider&quot;&gt;&lt;/div&gt;
+</code></pre>
+
+  <p>
+    The syntax used in JSON is similar to that used in HTML. Some differences would be that the
+    <code>as-</code>
+    prefix is not used anymore for classes, the
+    <code>data-</code>
+    prefix is not used for attributes, and using the dash (-) as a delimiter is replaced with using the CamelCase notation.
+  </p>
+  <p>These are the node names that need to be used:</p>
+  <ul>
+    <li>
+      <code>accordion</code>
+      : for the main accordion object
+    </li>
+    <li>
+      <code>panels</code>
+      : for the array of panel objects
+    </li>
+    <li>
+      <code>background</code>
+      : for background images
+    </li>
+    <li>
+      <code>backgroundLink</code>
+      : for links attached to background images
+    </li>
+    <li>
+      <code>backgroundRetina</code>
+      : for alternative, high resolution images
+    </li>
+    <li>
+      <code>backgroundOpened</code>
+      : for alternative images that will appear when the panel is opened
+    </li>
+    <li>
+      <code>backgroundOpenedLink</code>
+      : for links attached to the opened background image
+    </li>
+    <li>
+      <code>backgroundOpenedRetina</code>
+      : for retina version of the opened background image
+    </li>
+    <li>
+      <code>layers</code>
+      : for the array of layer objects
+    </li>
+  </ul>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>{
+    &quot;accordion&quot;: {
+        &quot;panels&quot;: [
+            {
+                &quot;background&quot;: {&quot;source&quot;: &quot;path/to/image1.jpg&quot;},
+                &quot;backgroundRetina&quot;: {&quot;source&quot;: &quot;path/to/image1@2x.jpg&quot;},
+                &quot;backgroundOpened&quot;: {&quot;source&quot;: &quot;path/to/alt_image1.jpg&quot;},
+                &quot;backgroundOpenedRetina&quot;: {&quot;source&quot;: &quot;path/to/image1@2x.jpg&quot;},
+                &quot;backgroundLink&quot;: {&quot;address&quot;: &quot;http://bqworks.com&quot;}
+            },
+            {
+                &quot;background&quot;: {&quot;source&quot;: &quot;path/to/image2.jpg&quot;},
+                &quot;backgroundRetina&quot;: {&quot;source&quot;: &quot;path/to/image2@2x.jpg&quot;},
+                &quot;backgroundOpened&quot;: {&quot;source&quot;: &quot;path/to/alt_image2.jpg&quot;},
+                &quot;backgroundOpenedRetina&quot;: {&quot;source&quot;: &quot;path/to/alt_image2@2x.jpg&quot;},
+                &quot;backgroundOpenedLink&quot;: {&quot;address&quot;: &quot;http://bqworks.com&quot;}
+            }
+        ]
+    }
+}
+</code></pre>
+
+  <p>
+    If you want to use lazy loading, you simply need to add the
+    <code>lazyLoading</code>
+    property to the
+    <code>accordion</code>
+    object and specify the path of the placeholder image.
+  </p>
+  <p>
+    <em>Example:</em>
+  </p>
+  <pre><code>{
+    &quot;accordion&quot;: {
+        &quot;lazyLoading&quot;: &quot;path/to/blank.gif&quot;
+        &quot;panels&quot;: [
+            ...
+        ]
+    }
+}
+</code></pre>
+
+  <p>
+    When using layers, the equivalent for the
+    <code>class</code>
+    attribute is the
+    <code>style</code>
+    property. As noted before, the
+    <code>as-</code>
+    and
+    <code>data-</code>
+    prefixes are not used anymore and the names of the properties use a CamelCase notation. It's important to already be familiar with the 'Layers' module before learning how to use layers in JSON. The available styles and properties are enumerated below, but check the presentation of the 'Layers' module for a description of these.
+  </p>
+  <h5 id="styles_1">Styles</h5>
+  <ul>
+    <li>opened</li>
+    <li>closed</li>
+    <li>black</li>
+    <li>white</li>
+    <li>padding</li>
+    <li>rounded.</li>
+  </ul>
+  <h5 id="properties">Properties</h5>
+  <ul>
+    <li>
+      content - this is the only particular property and it's used to set the content of the layer
+    </li>
+    <li>width</li>
+    <li>height</li>
+    <li>depth</li>
+    <li>position</li>
+    <li>horizontal</li>
+    <li>vertical</li>
+    <li>showTransition</li>
+    <li>showOffset</li>
+    <li>showDuration</li>
+    <li>showDelay</li>
+    <li>hideTransition</li>
+    <li>hideOffset</li>
+    <li>hideDuration</li>
+    <li>hideDelay</li>
+  </ul>
+  <p>
+    This module is showcased in example_json.html, which is the JSON version of example2.html. Please check the JSON file created for this example, accordion.json, to see how layers can be created in JSON.
+  </p>
+
+  <h1 id="examples">Examples</h1>
+  <p>
+    This chapter contains a presentation of each example included with 'Accordion Slider'. The presentation will not go through the properties or HTML structure of the examples, as these can be understood by reading the other chapters from this documentation.
+  </p>
+  <h2 id="example-1">Example 1</h2>
+  <p>
+    Beyond demonstrating how to use layers and several other features, the main purpose of this example is to show the difference between 'auto' and 'custom' responsiveness.
+  </p>
+  <p>
+    The example allows you to change the responsive mode at any time in order to see how each option works. You will notice that changing the responsive mode to 'auto' will display all layer content completely, but will also resize the layers proportionally to the size of the accordion. Changing the responsive mode to 'custom' will keep the layers at a size that makes the text easy to read at any size of the accordion, but for this purpose it will hide part of the layers and show only the most important content.
+  </p>
+  <p>
+    'Custom' responsiveness is used in conjunction with CSS media queries, which are used to partly hide the layers at smaller screen sizes. The CSS code used in this example can be found in 'examples/css/examples.css'.
+  </p>
+  <p>
+    The block of code used for changing the responsive mode is only for demonstration purposes, and doesn't need to be included in your project.
+  </p>
+  <h2 id="example-2">Example 2</h2>
+  <p>
+    This example demonstrates how to swap the background image when panels are opened, how to change the number of visible visible panels for smaller screens, and how to integrate the accordion with 3rd party scripts, Fancybox2 in this case.
+  </p>
+  <p>
+    Regarding Fancybox integration, it is important to note that integrating a lightbox script or a simple link with touch swipe or mouse drag functionality is a little tricky, because doing a mouse drag or a touch swipe can activate the link or lightbox even if this is not intended. Simple links are automatically handled by the Accordion Slider plugin (the Touch Swipe module, to be more specific), so they don't require any attention from your part, but using 3rd party scripts, like Fancybox, requires some attention. In the example, you can see a commented block of code that handles this integration.
+  </p>
+  <h2 id="example-3">Example 3</h2>
+  <p>
+    The main purpose of this example is to demonstrate how to use breakpoints in order to change the appearance of the accordion for different screen sizes. This example uses 'custom' responsiveness, so it has some associated CSS code in the examples.css file.
+  </p>
+  <h2 id="example-4">Example 4</h2>
+  <p>
+    This example shows how to use HTML content inside the accordion, and focuses on using videos. In the Modules chapter, there is a chapter about how the videos are integrated with the accordion in order to have them automatically controlled.
+  </p>
+  <p>
+    It's not necessary to add the HTML content, including the videos, inside layers. You can add it directly in the main panel container, but layers make it easier to position and size this content.
+  </p>
+  <p>
+    The example also demonstrates how to use deep-linking. As you can see, below the accordion there are four numerated links which will open the four panels of the accordion. Then, there is another link which doesn't use deep-linking, but one of the accordion's public methods that will close all the panels.
+  </p>
+  <h2 id="example-xml">Example XML</h2>
+  <p>
+    This example replicates 'example 1', but uses XML as a source for the content of the accordion.
+  </p>
+  <h2 id="example-json">Example JSON</h2>
+  <p>
+    This is similar to 'example 2', and uses a JSON file as a source for the content of the accordion.
+  </p>
+
+  <h1 id="troubleshoot">Troubleshoot</h1>
+  <p>
+    Because this script is new there aren't frequently asked questions at the moment but they will be included here as they arise.
+  </p>
+  <p>
+    If you have a question or technical problem that is not covered by this guide, please use
+    <a href="http://support.bqworks.com/home">the official bqworks Support Center</a>
+    .
+  </p>
+
+  <h1 id="updates">Update</h1>
+  <p>
+    Updates will be announced on the
+    <a href="https://twitter.com/bqworks">bqworks</a>
+    Twitter channel, so I recommend following in order to be up to date with the latest releases. Also, updates will be announced in the Changelog section of the accordion's CodeCanyon page.
+  </p>
+  <p>
+    When a new version is available, you can download it for free from your CodeCanyon account:
+    <a href="http://codecanyon.net/downloads/">http://codecanyon.net/downloads/</a>
+    .
+  </p>
+  <h2 id="changelog">Changelog</h2>
+  <p>
+    <strong>v. 2.6</strong>
+  </p>
+  <ul>
+    <li>fix hidden background when fadeOutBackground is enabled</li>
+    <li>fix non-responsive bug</li>
+    <li>improve touch swipe support on touch-enabled desktop browsers</li>
+  </ul>
+  <p>
+    <strong>v. 2.5.1</strong>
+  </p>
+  <ul>
+    <li>some bug fixes</li>
+  </ul>
+  <p>
+    <strong>v. 2.5</strong>
+  </p>
+  <ul>
+    <li>add shuffle option</li>
+    <li>various fixes and improvements</li>
+  </ul>
+  <p>
+    <strong>v. 2.4</strong>
+  </p>
+  <ul>
+    <li>fixed background image swap when startPanel is used</li>
+    <li>added the 'as-closed' class by default when the accordion is initially closed</li>
+    <li>fixed the 'as-opened' class removal from the last opened panel</li>
+    <li>added 0 margin and padding to background images to prevent unwanted styling</li>
+  </ul>
+  <p>
+    <strong>v. 2.3</strong>
+  </p>
+  <ul>
+    <li>fixed non-responsive mode</li>
+    <li>fixed link support when 'openPanelOn' is set to 'click'</li>
+    <li>fixed touch-swipe support when 'openPanelOn' is set to 'click'</li>
+    <li>added 'never' option for 'openPanelOn'</li>
+    <li>added bottom margin to accordion when buttons are present</li>
+    <li>simplified selectors in the CSS code</li>
+    <li>improved support for inner HTML content</li>
+    <li>added support for no-js class</li>
+    <li>added preset font sizes for layers</li>
+    <li>added CSS code that prevents unwanted CSS inheritance</li>
+  </ul>
+  <p>
+    <strong>v. 2.2</strong>
+  </p>
+  <ul>
+    <li>added 'keyboardTarget' property</li>
+    <li>made multiple important improvements and fixes</li>
+  </ul>
+  <p>
+    <strong>v. 2.1</strong>
+  </p>
+  <ul>
+    <li>added 'Keyboard' module</li>
+    <li>fixed a bug in the 'SwapBackground' module</li>
+    <li>optimized video integration</li>
+  </ul>
+  <p>
+    <strong>v. 2.0</strong>
+  </p>
+  <ul>
+    <li>
+      changed the plugin name from 'Classic Accordion' to 'Accordion Slider'
+    </li>
+    <li>
+      rewritten the entire code and implemented modular architecture
+    </li>
+    <li>added many new features</li>
+  </ul>
+
+  <div class="main-menu">
+    <ul class="menu">
+      <li>
+        <a href="#setup">Setup</a>
+      </li>
+      <li>
+        <a href="#javascript-api">JavaScript API</a>
+        <ul class="submenu">
+          <li>
+            <a href="#1-properties">Properties</a>
+          </li>
+          <li>
+            <a href="#2-public-methods">Public Methods</a>
+          </li>
+          <li>
+            <a href="#3-callbacks">Callbacks</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#modules">Modules</a>
+        <ul class="submenu">
+          <li>
+            <a href="#1-touch-swipe">Touch Swipe</a>
+          </li>
+          <li>
+            <a href="#2-autoplay">Autoplay</a>
+          </li>
+          <li>
+            <a href="#3-mouse-wheel">Mouse Wheel</a>
+          </li>
+          <li>
+            <a href="#4-keyboard">Keyboard</a>
+          </li>
+          <li>
+            <a href="#5-layers">Layers</a>
+          </li>
+          <li>
+            <a href="#6-lazy-loading">Lazy Loading</a>
+          </li>
+          <li>
+            <a href="#7-retina">Retina</a>
+          </li>
+          <li>
+            <a href="#8-deep-linking">Deep Linking</a>
+          </li>
+          <li>
+            <a href="#9-swap-background">Swap Background</a>
+          </li>
+          <li>
+            <a href="#10-smart-video">Smart Video</a>
+          </li>
+          <li>
+            <a href="#11-xml">XML</a>
+          </li>
+          <li>
+            <a href="#12-json">JSON</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#examples">Examples</a>
+      </li>
+      <li>
+        <a href="#troubleshoot">Troubleshoot</a>
+      </li>
+      <li>
+        <a href="#updates">Update</a>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+@charset "utf-8";
+/* CSS 2016 Copyright by Do Nguyen Thanh Trieu  */
+.bang-gia{
+	margin: 20px auto;
+    width: 100%;
+    text-align: center;
+}
+#tabs-2 .col-1, #tabs-2 .col-2,#tabs-3 .col-1,#tabs-3 .col-2,
+#tabs-4 .col-1, #tabs-4 .col-2,#tabs-5 .col-1,#tabs-5 .col-2{
+	display: inline-table;
+    overflow: hidden;
+	margin-right:10px;
+	border-right:1px solid #e6e6e6;
+	vertical-align:top;
+}
+.col-1 dl,.col-2 dl{margin:1px auto;}
+.col-1 dt,.col-2 dt{
+	text-align: center;
+    border: 1px solid #e6e6e6;
+    margin-top:-1px;
+	margin-right:-1px;
+    padding: 25px 31px; overflow:hidden;
+}
+#tabs-5 .tit-2{width:240px;}#tabs-5 .tit-2 p{text-align:justify;margin-top:10px;}#tabs-5 .tit-2 h3{margin-bottom:10px;color:#333;} .tit-2 i{margin-bottom:10px;font-size:13px;color:#555;}
+#tabs-4 .col-1 dt,#tabs-4 .col-2 dt,#tabs-5 .col-1 dt,#tabs-5 .col-2 dt{
+	text-align: center;
+    border: 1px solid #e6e6e6;
+    margin-top:-1px;
+	margin-right:-1px;
+    padding: 15px 20px; overflow:hidden;
+}
+.col-1 .tit-2 p{color: rgb(119, 119, 119);     font: normal normal normal normal 14px / 21px Arial, Helvetica, sans-serif;}
+.col-1 .tit-2 b{ 
+	color: rgb(59, 89, 152);
+    font: normal normal bold normal 48px / 48px Arial, Helvetica, sans-serif;
+}
+.col-1 .tit-2 span{
+	color: rgb(59, 89, 152);
+    font: normal normal bold normal 20px / 20px Arial, Helvetica, sans-serif;
+}
+.col-1 .tit-1 .pro{
+	width:240px;
+}
+.col-1 .tit-2 h1{color:#333;}
+.col-1 .tit-2 button{
+	padding:15px 30px;background-color: #3b5998;font-weight:700;font-size:16px;
+    color:white;border:1px solid #2F4E8F;border-radius:3px;cursor:pointer;}
+.tit-3{
+    color: rgb(255, 255, 255);
+    background: rgb(119, 119, 119) none repeat scroll 0% 0% / auto padding-box border-box;
+}
+.col-2 .tit-1,.col-2 .tit-2{
+	color:white; background:rgb(59, 89, 152) none repeat scroll 0% 0% / auto padding-box border-box;
+	border: 1px solid #5171b5;
+}
+.col-2 .tit-2 p{ font: normal normal normal normal 14px / 21px Arial, Helvetica, sans-serif;}
+.col-2 .tit-2 b{ font: normal normal bold normal 48px / 48px Arial, Helvetica, sans-serif;}
+.col-2 .tit-2 span{ font: normal normal bold normal 20px / 20px Arial, Helvetica, sans-serif;}
+
+.tabs-1{
+	box-sizing: border-box;
+    color: rgb(119, 119, 119);
+    height: 167px;
+    text-align: center;
+    overflow: hidden;
+    padding:0px; display:inline-block;
+}
+.tab-content{ display:none;}
+.show{ display:inherit;}
+.current{
+	background: rgb(59, 89, 152) none repeat scroll 0% 0% / auto padding-box border-box;
+	color:white;
+}
+.current::before{
+	bottom: 40px;
+    box-sizing: border-box;
+    color: rgb(119, 119, 119);
+    content: " ";
+    display: block;
+    height: 10px;
+    left: 90px;
+    position: absolute;
+    right: 80px;
+    text-align: center;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    top: 117px;
+    width: 20px;
+    column-rule-color: rgb(119, 119, 119);
+    perspective-origin: 10px 5px;
+    transform-origin: 10px 5px;
+    border-top: 10px solid rgb(59, 89, 152);
+    border-right: 10px solid rgba(0, 0, 0, 0);
+    border-bottom: 0px none rgb(119, 119, 119);
+    border-left: 10px solid rgba(0, 0, 0, 0);
+    font: normal normal normal normal 15px / 27px Arial, Helvetica, sans-serif;
+    list-style: none outside none;
+    margin: 0px 0px 0px -10px;
+    outline: rgb(119, 119, 119) none 0px;
+    transition: all 0.2s ease-in-out 0s;
+}
+.tabs-1 li{
+    display: inline-block;
+    height: 117px;
+    position: relative;
+    right: 0px;
+    text-align: center;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+    top: 0px;
+    width: 170px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.tabs-1 .but-1{ 
+}
+.tabs-1 .but-1 #icon-1::before{
+content: "\f080";font: normal normal normal normal 28px / 50px FontAwesome;}
+.tabs-1 .but-2 #icon-2::before{
+content: "\f042";font: normal normal normal normal 28px / 50px FontAwesome;}
+.tabs-1 .but-3 #icon-3::before{
+content: "\f029";font: normal normal normal normal 28px / 50px FontAwesome;}
+.tabs-1 .but-4 #icon-4::before{
+content: "\f1ea";font: normal normal normal normal 28px / 50px FontAwesome;}
+.tabs-1 i{
+	cursor: default;
+    display: inline-block;
+    padding: 10px 60px;
+}
+.tabs-2 .but-2{
+}
+.tabs-2 .but-2 #icon-2{
+}
+.tabs-2 .but-3{
+}
+.tabs-2 .but-3 #icon-3{
+}
+.tabs-2 .but-4{
+}
+.tabs-2 .but-4 #icon-4{
+}
+

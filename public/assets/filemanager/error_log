@@ -1,0 +1,26 @@
+[12-Jan-2018 07:16:16 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[12-Jan-2018 07:16:16 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[12-Jan-2018 07:16:17 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[12-Jan-2018 07:16:17 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[12-Jan-2018 07:16:17 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[12-Jan-2018 07:16:17 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[12-Jan-2018 07:16:17 Europe/Rome] PHP Notice:  Undefined index: RF in /home/nhacuavi/baotangthiennhien/public/assets/filemanager/include/utils.php on line 3
+[04-Jun-2021 05:41:44 Europe/Rome] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 40960 bytes) in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 563
+[04-Jun-2021 05:41:44 Europe/Rome] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 40960 bytes) in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 563
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error: Not a JPEG file: starts with 0x52 0x49 in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 563
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  imagecreatefromjpeg(): '/home/aztechhv/cts.com.vn/public/assets/filemanager/../../upload/filemanager/Du an/Habeco Hoang Hoa Tham.jpeg' is not a valid JPEG file in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 563
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  imagesx() expects parameter 1 to be resource, bool given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 723
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  imagesy() expects parameter 1 to be resource, bool given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 724
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  Division by zero in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 732
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  Division by zero in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 733
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  imagecreatetruecolor() expects parameter 1 to be int, float given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 749
+[07-May-2024 04:44:29 Europe/Rome] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, null given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 782
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  imagecreatefromjpeg(): gd-jpeg: JPEG library reports unrecoverable error: Not a JPEG file: starts with 0x52 0x49 in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 563
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  imagecreatefromjpeg(): '/home/aztechhv/cts.com.vn/public/assets/filemanager/../../upload/filemanager/Du an/Habeco Hoang Hoa Tham (1).jpeg' is not a valid JPEG file in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 563
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  imagesx() expects parameter 1 to be resource, bool given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 723
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  imagesy() expects parameter 1 to be resource, bool given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 724
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  Division by zero in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 732
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  Division by zero in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 733
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  imagecreatetruecolor() expects parameter 1 to be int, float given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 749
+[07-May-2024 04:45:01 Europe/Rome] PHP Warning:  imagecopyresampled() expects parameter 1 to be resource, null given in /home/aztechhv/cts.com.vn/public/assets/filemanager/UploadHandler.php on line 782
+[03-Dec-2024 10:52:03 Europe/Rome] PHP Warning:  unlink(../../upload/filemanager/r?u iceland.jpg): No such file or directory in /home/aztechhv/cts.com.vn/public/assets/filemanager/execute.php on line 100
