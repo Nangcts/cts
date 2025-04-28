@@ -42,4 +42,9 @@ class Category extends Model
         $id_arr =  explode(",", $id_arr);
         return $id_arr;
     }
+    public function children()
+{
+    return $this->hasMany(Category::class, 'parent_id');
+}
+
 }

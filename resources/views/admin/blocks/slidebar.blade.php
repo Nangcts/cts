@@ -28,6 +28,7 @@
           <li class="{{ isActiveRoute('admin.category.getNested') }}"><a  href="{!! route('admin.category.getNested') !!}">Phân loại sản phẩm</a></li>
           <li class="{{ isActiveRoute('searchProduct') }}"><a  href="{!! route('searchProduct') !!}">Trang sản phẩm</a></li>
           <li class="{{ isActiveRoute('sortHotProducts') }}"><a  href="{!! route('sortHotProducts') !!}">Sản phẩm nổi bật</a></li>
+          <li class="{{ isActiveRoute('getOfferProducts') }}"><a  href="{!! route('getOfferProducts') !!}">Sắp xếp sản phẩm</a></li>
           <li class="{{ isActiveRoute('admin.article.add') }}"><a  href="{!! route('admin.article.add') !!}">Đăng bài viết</a></li>
           <li class="{{ isActiveRoute('admin.cate.getNested') }}"><a  href="{!! route('admin.cate.getNested') !!}">Danh mục bài viết</a></li>
           <li class="{{ isActiveRoute('admin.article.list') }}"><a  href="{!! route('admin.article.list') !!}">Bài viết</a></li>

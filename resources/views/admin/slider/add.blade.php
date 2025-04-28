@@ -15,7 +15,7 @@
         <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 
         <div class="form-group">
-          <label for="iptSlide" class="col-lg-2 col-sm-2 control-label"><strong>Chọn ảnh</strong></label>
+          <label for="iptSlide" class="col-lg-2 col-sm-2 control-label"><strong>Chọn ảnh (kích cỡ 901 x 461)</strong></label>
           <div class="col-lg-10">
             <input type = "file" class="form-control" name="iptSlide" >
           </div>

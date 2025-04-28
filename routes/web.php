@@ -139,6 +139,11 @@ Route::group(['prefix'=>'admin','middleware' => 'auth'], function(){
 		Route::get('offer-products', 'ProductController@getOfferProducts')->name('getOfferProducts');
 		Route::post('reorder-offer-products', 'ProductController@reOrderOfferProducts')->name('reOrderOfferProducts');
 		Route::get('remove-offer-product/{id}', 'ProductController@removeOfferProduct')->name('removeOfferProduct');
+		Route::get('/admin/product/sort-offer-products', 'ProductController@showSortOfferProducts')->name('sortOfferProducts');
+		Route::post('/admin/product/reorder-offer-products', 'ProductController@reOrderOfferProducts')->name('reOrderOfferProducts');
+
+
+
 	});
 	Route::group(['prefix'=>'menu'], function() {
 		Route::get('add',['as'=>'admin.menu.add','uses'=>'MenuController@getMenu']);

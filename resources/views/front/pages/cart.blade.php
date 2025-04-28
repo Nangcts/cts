@@ -96,7 +96,7 @@
 			</div> 
 			<div class="col-lg-12">
 				<label for="password" class="col-form-label text-md-right"  style="float: left; margin-right: 10px;">Mã xác minh</label>
-				<input style="float: left; max-width: 130px; margin-right: 7px; height: 37px" type="text" id="captcha" class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}" placeholder="Nhập mã trên ảnh" name ="captcha">
+				<input style="float: left; max-width: 160px; margin-right: 7px; height: 37px" type="text" id="captcha" class="form-control{{ $errors->has('captcha') ? ' is-invalid' : '' }}" placeholder="Nhập mã trên ảnh" name ="captcha">
 
 				<div class="captcha" style="float: left;">
 					<span>{!! captcha_img('flat') !!}</span>

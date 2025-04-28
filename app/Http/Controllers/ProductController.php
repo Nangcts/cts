@@ -15,7 +15,7 @@ use Validator;
 use GuzzleHttp\Client;
 use App\User;
 use App\Product_Images;
-
+use App\Category;
 class ProductController extends Controller
 {
     public function getAddProduct() 
@@ -253,6 +253,26 @@ class ProductController extends Controller
 
         return view('admin.product.edit', ['categories' => $categories ,'product' => $product,'catalogs' => $catalogs,'tags' => $tags,'id' => $id,'article_id' => $article_id,'combos' => $combos]);
     }
+    public function showSortOfferProducts(Request $request)
+{
+    $categories = Category::all();
+    $categoryId = $request->input('category_id');
+
+    $offer_products = Product::when($categoryId, function ($query) use ($categoryId) {
+        return $query->whereHas('categories', function ($q) use ($categoryId) {
+            $q->where('categories.id', $categoryId);
+        });
+    })->orderBy('sort_order_1', 'asc')->get();
+    
+
+    // Nếu yêu cầu là AJAX thì chỉ trả về phần HTML của danh sách sản phẩm
+    if ($request->ajax()) {
+        return view('admin.product.product_list', compact('offer_products'))->render();
+    }
+
+    // Nếu là truy cập ban đầu (không AJAX), trả về toàn bộ view
+    return view('admin.product.sort_offer_products', compact('offer_products', 'categories'));
+}
 
     public function postEditProduct(Request $request, $id) 
     {
@@ -374,402 +394,414 @@ class ProductController extends Controller
     {
         $body = new \DOMDocument();
         $body->loadhtml('<?xml encoding="utf-8" ?>' . $html);
-        $imgs = $body->getElementsByTagName('img');
-        $i = 0;
-        for ($i; $i < $imgs->length; $i++) {
-            $attr = $imgs->item($i)->getAttribute('src');
-            $compare = substr_count($attr,'http',0,5);
-            if ($compare == 1) {
-                $filename = basename($attr);
-                $filename = str_slug($attr);
-                if (file_exists('public/upload/get_images/'.$filename)) {
-                    $filename = str_random(5)."_".$filename;
-                }
-                Image::make($attr)->save('public/upload/get_images/'.$filename);
-                $imgs->item($i)->setAttribute('src','/public/upload/get_images/'.$filename);
-                $body->saveHTML($imgs->item($i));
-            }
-        }
-        $body = $body->saveHTML();
-        return $body;
+$imgs = $body->getElementsByTagName('img');
+$i = 0;
+for ($i; $i < $imgs->length; $i++) {
+    $attr = $imgs->item($i)->getAttribute('src');
+    $compare = substr_count($attr,'http',0,5);
+    if ($compare == 1) {
+    $filename = basename($attr);
+    $filename = str_slug($attr);
+    if (file_exists('public/upload/get_images/'.$filename)) {
+    $filename = str_random(5)."_".$filename;
+    }
+    Image::make($attr)->save('public/upload/get_images/'.$filename);
+    $imgs->item($i)->setAttribute('src','/public/upload/get_images/'.$filename);
+    $body->saveHTML($imgs->item($i));
+    }
+    }
+    $body = $body->saveHTML();
+    return $body;
     }
     public function deleteAll(Request $request)
     {
-        $this->authorize('delete-product');
+    $this->authorize('delete-product');
 
-        $ids = $request->ids;
-        $ids = explode(",",$ids);
-        foreach ($ids as $key => $value) {
-            $product = DB::table('products')->where('id', $value)->first();
-            $p_img = 'public/filemanager/upload/product/' . $product->image;
-            if (file_exists($p_img)) {
-                File::delete($p_img);
-            }
-            DB::table('products')->where('id', $value)->delete();
-        }
-        return response()->json(['success'=>"Xóa sản phẩm thành công."]);
+    $ids = $request->ids;
+    $ids = explode(",",$ids);
+    foreach ($ids as $key => $value) {
+    $product = DB::table('products')->where('id', $value)->first();
+    $p_img = 'public/filemanager/upload/product/' . $product->image;
+    if (file_exists($p_img)) {
+    File::delete($p_img);
+    }
+    DB::table('products')->where('id', $value)->delete();
+    }
+    return response()->json(['success'=>"Xóa sản phẩm thành công."]);
     }
     public function setimage ($image,$img_name, $path,$img_root, $width, $height)
     {
-        $img_width = $image->width();
-        $img_height = $image->height();
-        $check = $img_width/$img_height;
-        // nếu vượt chiều cao
-        if ($check < 1) {
-            if ($img_height > $height) {
-                $image->resize(null, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $image->save();
-            }
+    $img_width = $image->width();
+    $img_height = $image->height();
+    $check = $img_width/$img_height;
+    // nếu vượt chiều cao
+    if ($check < 1) { if ($img_height> $height) {
+        $image->resize(null, $height, function ($constraint) {
+        $constraint->aspectRatio();
+        });
+        $image->save();
+        }
         }
         if ($check >= 1) {
-            if ($img_width > $width) {
-                $image->resize($width, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $image->save();
-            }
+        if ($img_width > $width) {
+        $image->resize($width, null, function ($constraint) {
+        $constraint->aspectRatio();
+        });
+        $image->save();
+        }
         }
         // Đưa ảnh đã xử lý vào khung
         $img_root->insert($path.$img_name, 'center');
         // if(isset($watermark)) {
-        //     $img_root->insert($watermark,'left-top');
+        // $img_root->insert($watermark,'left-top');
         // }
         $img_root->save($path.$img_name);
-    }
-    public function reOrderImages(Request $request) 
-    {
+        }
+        public function reOrderImages(Request $request)
+        {
         if ($request->ajax()) {
-            $_token = $request->get('_token');
-            $ids = $request->get('ids');
-            if(isset($ids)) {
-                $count = 1;
-                foreach ($ids as $id) {
-                    DB::table('Product_Images')->where('id', $id)->update(['sort_order' => $count]);
-                    $count ++;
-                }
-            }
-        } 
-    }
+        $_token = $request->get('_token');
+        $ids = $request->get('ids');
+        if(isset($ids)) {
+        $count = 1;
+        foreach ($ids as $id) {
+        DB::table('Product_Images')->where('id', $id)->update(['sort_order' => $count]);
+        $count ++;
+        }
+        }
+        }
+        }
 
-    public function getHotProducts  ()
-    {
+        public function getHotProducts ()
+        {
         $hot_products = Product::where('hot',1)->orderBy('sort_order','asc')->get();
 
         return view('admin.product.sort_hot_products', compact('hot_products'));
-    }
-    public function reOrderProducts(Request $request) 
-    {
+        }
+        public function reOrderProducts(Request $request)
+        {
         if ($request->ajax()) {
-            $_token = $request->get('_token');
-            $ids = $request->get('ids');
-            if(isset($ids)) {
-                $count = 1;
-                foreach ($ids as $id) {
-                    DB::table('products')->where('id', $id)->update(['sort_order' => $count]);
-                    $count ++;
-                }
-            }
-        } 
-    }
+        $_token = $request->get('_token');
+        $ids = $request->get('ids');
+        if(isset($ids)) {
+        $count = 1;
+        foreach ($ids as $id) {
+        DB::table('products')->where('id', $id)->update(['sort_order' => $count]);
+        $count ++;
+        }
+        }
+        }
+        }
 
-    public function removeHot ($id) 
-    {
+        public function removeHot ($id)
+        {
         $product = Product::find($id);
         $product->hot = 0;
         $product->save();
         Session::flash('success','bạn đỡ gỡ bỏ sản phẩm ra khỏi danh sách');
         return redirect('/admin/product/hot-products');
-    }
+        }
 
 
-    public function getOfferProducts  ()
-    {
+        public function getOfferProducts ()
+        {
+        $products = \App\Product::orderBy('id', 'desc')->get(); // Lấy tất cả sản phẩm
         $offer_products = Product::where('offer',1)->orderBy('sort_offer','asc')->get();
 
-        return view('admin.product.sort_offer_products', compact('offer_products'));
-    }
-    public function reOrderOfferProducts(Request $request) 
-    {
-        if ($request->ajax()) {
-            $_token = $request->get('_token');
-            $ids = $request->get('ids');
-            if(isset($ids)) {
-                $count = 1;
-                foreach ($ids as $id) {
-                    DB::table('products')->where('id', $id)->update(['sort_offer' => $count]);
-                    $count ++;
+        return view('admin.product.sort_offer_products', compact('products', 'offer_products'));
+        }
+        public function reOrderOfferProducts(Request $request)
+        {
+            $ids = $request->input('ids') ?? $request->input('order'); // lấy ids (nếu ajax) hoặc order (nếu form thường)
+        
+            if (!empty($ids)) {
+                foreach ($ids as $index => $id) {
+                    Product::where('id', $id)->update([
+                        'sort_offer' => $index + 1,
+                        'sort_order_1' => $index + 1,
+                    ]);
                 }
             }
-        } 
-    }
+        
+            if ($request->ajax()) {
+                return response()->json(['status' => 'success']);
+            } else {
+                return redirect()->back()->with('success', 'Sắp xếp sản phẩm thành công!');
+            }
+        }
+        
+        public function index()
+        {
+        $categories = Category::all(); // hoặc thêm điều kiện nếu cần
 
-    public function removeOfferProduct ($id) 
-    {
+        return view('admin.product.sort_offer_products', compact('categories'));
+        }
+        public function removeOfferProduct ($id)
+        {
         $product = Product::find($id);
         $product->hot = 0;
         $product->save();
         Session::flash('success','bạn đỡ gỡ bỏ sản phẩm ra khỏi danh sách');
         return redirect('/admin/product/hot-products');
-    }
+        }
 
-    public function removeDuplicate ()
-    {
+        public function removeDuplicate ()
+        {
         foreach (Product::orderBy('id','asc')->get() as $product) {
-            foreach (Product::where('id','>', $product->id)->orderBy('id','asc')->get() as $item) {
-                if($product->name == $item->name) {
-                    $item->delete();
-                }
-            }
+        foreach (Product::where('id','>', $product->id)->orderBy('id','asc')->get() as $item) {
+        if($product->name == $item->name) {
+        $item->delete();
+        }
+        }
         }
         return "done";
-    }
+        }
 
-    public function decodeIntro()
-    {
+        public function decodeIntro()
+        {
         foreach (Product::all() as $key => $product) {
-            $intro = iconv("UTF-8", "ISO-8859-1//TRANSLIT",$product->intro);
-            $product->update(['intro' => $intro]);
+        $intro = iconv("UTF-8", "ISO-8859-1//TRANSLIT",$product->intro);
+        $product->update(['intro' => $intro]);
         }
-    }
-    public function deleteDropzoneImg (Request $request)
-    {
-        if ($request->ajax()) {
-            $filename = $request->id;
-            $uploaded_image = Product_Images::where('original_name', basename($filename))->orderBy('created_at','desc')->first();
-
-            if (empty($uploaded_image)) {
-                return Response::json(['message' => 'File không tồn tại'], 400);
-            }
-
-            $file_path = 'upload/filemanager/product/gallery/'. $uploaded_image->image;
-
-            if (file_exists($file_path)) {
-                File::delete($file_path);
-            }
-
-            if (!empty($uploaded_image)) {
-                $uploaded_image->delete();
-            }
-
-            // return Response::json(['Thông báo' => 'Xóa ảnh thành công'], 200);
         }
-    }
-    public function dropZoneUploadImg (Request $request, $temp_id)
-    {
+        public function deleteDropzoneImg (Request $request)
+        {
         if ($request->ajax()) {
-            if ($request->hasFile('file')) {
-                $imageFiles = $request->file('imgFile');
-                // set destination path
-                $folderDir = 'upload/filemanager/product/gallery/';
-                $destinationPath = public_path() . '/' . $folderDir;
-                // this form uploads multiple files
-                foreach ($request->file('file') as $fileKey => $fileObject ) {
-                    // make sure each file is valid
-                    if ($fileObject->isValid()) {
-                        // make destination file name
-                        $destinationFileName = time() . $fileObject->getClientOriginalName();
-                        // move the file from tmp to the destination path
-                        $fileObject->move($destinationPath, $destinationFileName);
-                        // save the the destination filename
-                        $ProductImage = new Product_Images;
-                        $ProductImage->image = $destinationFileName;
-                        $ProductImage->original_name = basename($fileObject->getClientOriginalName());
-                        $ProductImage->product_id = $temp_id;
-                        $ProductImage->save();
-                        $data[] = $ProductImage->id;
-                        // resize 600x600
-                        $img_resize = Image::make($destinationPath.$destinationFileName);
-                        $img_resize->resize(600,600)->save();
-                    }
-                }
-            }
+        $filename = $request->id;
+        $uploaded_image = Product_Images::where('original_name',
+        basename($filename))->orderBy('created_at','desc')->first();
+
+        if (empty($uploaded_image)) {
+        return Response::json(['message' => 'File không tồn tại'], 400);
+        }
+
+        $file_path = 'upload/filemanager/product/gallery/'. $uploaded_image->image;
+
+        if (file_exists($file_path)) {
+        File::delete($file_path);
+        }
+
+        if (!empty($uploaded_image)) {
+        $uploaded_image->delete();
+        }
+
+        // return Response::json(['Thông báo' => 'Xóa ảnh thành công'], 200);
+        }
+        }
+        public function dropZoneUploadImg (Request $request, $temp_id)
+        {
+        if ($request->ajax()) {
+        if ($request->hasFile('file')) {
+        $imageFiles = $request->file('imgFile');
+        // set destination path
+        $folderDir = 'upload/filemanager/product/gallery/';
+        $destinationPath = public_path() . '/' . $folderDir;
+        // this form uploads multiple files
+        foreach ($request->file('file') as $fileKey => $fileObject ) {
+        // make sure each file is valid
+        if ($fileObject->isValid()) {
+        // make destination file name
+        $destinationFileName = time() . $fileObject->getClientOriginalName();
+        // move the file from tmp to the destination path
+        $fileObject->move($destinationPath, $destinationFileName);
+        // save the the destination filename
+        $ProductImage = new Product_Images;
+        $ProductImage->image = $destinationFileName;
+        $ProductImage->original_name = basename($fileObject->getClientOriginalName());
+        $ProductImage->product_id = $temp_id;
+        $ProductImage->save();
+        $data[] = $ProductImage->id;
+        // resize 600x600
+        $img_resize = Image::make($destinationPath.$destinationFileName);
+        $img_resize->resize(600,600)->save();
+        }
+        }
+        }
         }
         return $data;
-    }
-    public function getData(Request $request) {
+        }
+        public function getData(Request $request) {
         $cat = $request->cate;
         $url = $request->url;
         if(isset($url) && isset($cat)){
-            $categories = file_get_html($url);
-            foreach(array_reverse($categories->find('.product-page-item .view-content ul li')) as $product) {
-                $product_url = $product->find('.image-inner a.image',0)->href;
-                $product_url = 'https://cts.com.vn'.$product_url;
+        $categories = file_get_html($url);
+        foreach(array_reverse($categories->find('.product-page-item .view-content ul li')) as $product) {
+        $product_url = $product->find('.image-inner a.image',0)->href;
+        $product_url = 'https://cts.com.vn'.$product_url;
 
-                $product_url = $product_url;
+        $product_url = $product_url;
 
-                $data['name'] = $product->find('a.title',0)->plaintext;
+        $data['name'] = $product->find('a.title',0)->plaintext;
 
-                $product_detail = file_get_html($product_url);
-                $data['cong_dung'] = $product_detail->find('.products-detail .info-product p',0)->innertext;
-                $data['cong_dung'] = ltrim($data['cong_dung'],'Công dụng: ');
-                $data['cong_dung'] = utf8_encode($data['cong_dung']);
-
-
-                $data['so_dang_ky'] = $product_detail->find('.products-detail .info-product p',1)->innertext;
-                $data['so_dang_ky'] = ltrim($data['so_dang_ky'],'Giấy phép: ');
-
-                $data['quy_cach'] = $product_detail->find('.products-detail .info-product p',2)->innertext;
-                $data['quy_cach'] = ltrim($data['quy_cach'],'Quy cách: ');
-
-                $data['sell_price'] = $product_detail->find('div.gia span.text',0)->plaintext;
-
-                if($data['sell_price'] == 'Liên hệ') {
-                    $data['sell_price'] = null;
-                } else {
-                    $data['sell_price'] = preg_replace( '/[^0-9]/', '', $data['sell_price'] );
-                    $data['sell_price'] = (int)$data['sell_price'];
-                }
-
-                $data['body'] = $product_detail->find('.noi-dung .inner',0)->innertext;
-                $data['body'] = $data['body'];
-
-                $image_element = $product_detail->find('.products-detail .image-item .inner img',0);
-                if(isset($image_element)) {
-                    $data['image'] = $product_detail->find('.products-detail .image-item .inner img',0)->src;
-                    $data['image'] = preg_replace('/\?.*/', '', $data['image']);
-                    $data['image'] = 'https://songkhoesongvui.vn/'.$data['image'];
-                } else {
-                    $data['image'] = null;
-                }
+        $product_detail = file_get_html($product_url);
+        $data['cong_dung'] = $product_detail->find('.products-detail .info-product p',0)->innertext;
+        $data['cong_dung'] = ltrim($data['cong_dung'],'Công dụng: ');
+        $data['cong_dung'] = utf8_encode($data['cong_dung']);
 
 
-                $app_test = $this->savePost($cat, $data);
-                echo 'Đã đăng sản phẩm '. $data['name'] .'<br />';
-            }
+        $data['so_dang_ky'] = $product_detail->find('.products-detail .info-product p',1)->innertext;
+        $data['so_dang_ky'] = ltrim($data['so_dang_ky'],'Giấy phép: ');
+
+        $data['quy_cach'] = $product_detail->find('.products-detail .info-product p',2)->innertext;
+        $data['quy_cach'] = ltrim($data['quy_cach'],'Quy cách: ');
+
+        $data['sell_price'] = $product_detail->find('div.gia span.text',0)->plaintext;
+
+        if($data['sell_price'] == 'Liên hệ') {
+        $data['sell_price'] = null;
+        } else {
+        $data['sell_price'] = preg_replace( '/[^0-9]/', '', $data['sell_price'] );
+        $data['sell_price'] = (int)$data['sell_price'];
         }
 
-    }
+        $data['body'] = $product_detail->find('.noi-dung .inner',0)->innertext;
+        $data['body'] = $data['body'];
 
-    public function savePost ($cate_id, $data)
-    {
+        $image_element = $product_detail->find('.products-detail .image-item .inner img',0);
+        if(isset($image_element)) {
+        $data['image'] = $product_detail->find('.products-detail .image-item .inner img',0)->src;
+        $data['image'] = preg_replace('/\?.*/', '', $data['image']);
+        $data['image'] = 'https://songkhoesongvui.vn/'.$data['image'];
+        } else {
+        $data['image'] = null;
+        }
 
-        $product_add               = new Product;
-        $product_add->name         = $data['name'];
-        $product_add->catalog_id   = $cate_id;
-        $product_add->price        = $data['sell_price'];
-        $product_add->intro        = $data['cong_dung'];
-        $product_add->quy_cach     = $data['quy_cach'];
-        $product_add->so_dang_ky     = $data['so_dang_ky'];
-        $product_add->intro     = $data['cong_dung'];
-        $product_add->body         = $data['body'];
-        $product_add->is_check         = 1;
+
+        $app_test = $this->savePost($cat, $data);
+        echo 'Đã đăng sản phẩm '. $data['name'] .'<br />';
+        }
+        }
+
+        }
+
+        public function savePost ($cate_id, $data)
+        {
+
+        $product_add = new Product;
+        $product_add->name = $data['name'];
+        $product_add->catalog_id = $cate_id;
+        $product_add->price = $data['sell_price'];
+        $product_add->intro = $data['cong_dung'];
+        $product_add->quy_cach = $data['quy_cach'];
+        $product_add->so_dang_ky = $data['so_dang_ky'];
+        $product_add->intro = $data['cong_dung'];
+        $product_add->body = $data['body'];
+        $product_add->is_check = 1;
 
         // Xử lý ảnh sp
         if($data['image'] != null) {
-            $img_name = basename($data['image']);
-            while (file_exists('upload/filemanager/product/'.$img_name)) {
-                $img_name = str_random(5)."_".$img_name;
-            }
-            Image::make($data['image'])->save('upload/filemanager/product/' . $img_name);
-            $image = Image::make('upload/filemanager/product/' . $img_name);
-            $product_add->image         = $img_name;
-            // Tạo ảnh Thumbnail
-            $image = Image::make('upload/filemanager/product/' . $img_name);
-            $image->resize(250,150)->save('upload/filemanager/product/thumbs/'. $img_name);
-            // End xử lý ảnh
+        $img_name = basename($data['image']);
+        while (file_exists('upload/filemanager/product/'.$img_name)) {
+        $img_name = str_random(5)."_".$img_name;
+        }
+        Image::make($data['image'])->save('upload/filemanager/product/' . $img_name);
+        $image = Image::make('upload/filemanager/product/' . $img_name);
+        $product_add->image = $img_name;
+        // Tạo ảnh Thumbnail
+        $image = Image::make('upload/filemanager/product/' . $img_name);
+        $image->resize(250,150)->save('upload/filemanager/product/thumbs/'. $img_name);
+        // End xử lý ảnh
         } else {
-            $product_add->image = null;
+        $product_add->image = null;
         }
 
 
         $product_add->save();
-    }
+        }
 
-    public function getCloneProduct ($id) 
-    {
+        public function getCloneProduct ($id)
+        {
         $product = Product::find($id);
         $catalogs = Catalog::orderBy('sort_order','asc')->get();
         $first_product = Product::orderBy('created_at','desc')->first();
         if($first_product) {
-            $first_product_id = $first_product->id + 1000;
+        $first_product_id = $first_product->id + 1000;
         } else {
-            $first_product_id = 0;
+        $first_product_id = 0;
         }
 
         return view('admin.product.clone', compact('catalogs','first_product_id','product'));
-    }
-    public function storeCloneProduct (Request $request) 
-    { 
-       $this->validate($request, 
+        }
+        public function storeCloneProduct (Request $request)
+        {
+        $this->validate($request,
         [
-            'sltCatalog' => 'required',
-            'iptImage'   => 'required|image',
-            'iptName'    => 'required',
-            'iptPrice'    => 'required',
-            'iptCustomSlug' => 'unique:article,slug|unique:cate,slug|unique:catalog,slug|unique:products,slug',
+        'sltCatalog' => 'required',
+        'iptImage' => 'required|image',
+        'iptName' => 'required',
+        'iptPrice' => 'required',
+        'iptCustomSlug' => 'unique:article,slug|unique:cate,slug|unique:catalog,slug|unique:products,slug',
         ],
         [
-            'sltCatalog.required' => 'Chưa chọn danh mục',
-            'iptName.required'    => 'Chưa nhập tên',
-            'iptPrice.required'    => 'Chưa nhập giá bán',
-            'iptImage.required'   => 'Bạn chưa nhập ảnh sản phẩm',  
-            'iptImage.image'      => 'Định dạng ảnh không hợp lệ', 
-            'iptCustomSlug' => 'Đường dẫn đã tồn tại trên hệ thống !',
+        'sltCatalog.required' => 'Chưa chọn danh mục',
+        'iptName.required' => 'Chưa nhập tên',
+        'iptPrice.required' => 'Chưa nhập giá bán',
+        'iptImage.required' => 'Bạn chưa nhập ảnh sản phẩm',
+        'iptImage.image' => 'Định dạng ảnh không hợp lệ',
+        'iptCustomSlug' => 'Đường dẫn đã tồn tại trên hệ thống !',
         ]
-    );
+        );
 
 
-       $product_add               = new Product;
+        $product_add = new Product;
 
-       $temp_id = $request->random_temp_id;
-       $product_add->name         = $request->iptName;
-       $product_add->p_code         = $request->iptCode;
-       $product_add->catalog_id   = $request->sltCatalog;
-       $product_add->size   = $request->iptSize;
+        $temp_id = $request->random_temp_id;
+        $product_add->name = $request->iptName;
+        $product_add->p_code = $request->iptCode;
+        $product_add->catalog_id = $request->sltCatalog;
+        $product_add->size = $request->iptSize;
 
-       $product_add->visible      = $request->radioNew;
-       $product_add->sale         = $request->radioSale;
-       $product_add->sticky       = $request->radioSticky;
-       $product_add->price        = $request->iptPrice;
-       $product_add->base_price          = $request->iptBasePrice;
-       $product_add->intro        = $request->txtCongDung;
-       $product_add->body         = $request->txtBody;
+        $product_add->visible = $request->radioNew;
+        $product_add->sale = $request->radioSale;
+        $product_add->sticky = $request->radioSticky;
+        $product_add->price = $request->iptPrice;
+        $product_add->base_price = $request->iptBasePrice;
+        $product_add->intro = $request->txtCongDung;
+        $product_add->body = $request->txtBody;
 
-       if ($request->hasFile('iptImage')) {
+        if ($request->hasFile('iptImage')) {
         $file = $request->file('iptImage');
         $file_name = $file->getClientOriginalName();
-        $file_name = pathinfo($file_name, PATHINFO_FILENAME); 
+        $file_name = pathinfo($file_name, PATHINFO_FILENAME);
         $file_name = str_slug($file_name);
         $file_extension = $file->getClientOriginalExtension();
         $picture = $file_name.'.'.$file_extension;
         $des_path = public_path().'/upload/filemanager/product/';
         while (file_exists('upload/filemanager/product/'.$picture)) {
-            $picture = str_random(5)."_".$picture;
+        $picture = str_random(5)."_".$picture;
         }
         $product_add->image = $picture;
         $file->move($des_path, $picture);
         $image = Image::make('upload/filemanager/product/' . $picture);
         $img_root = Image::make('upload/filemanager/product/root.jpg');
         $this->setimage($image,$picture, $des_path, $img_root, 600, 600);
-            // Tạo ảnh Thumbnail
+        // Tạo ảnh Thumbnail
         $image->resize(300,300)->save('upload/filemanager/product/thumbs/'. $picture);
-    }
-    $product_add->seo_title   = $request->iptSeoTitle;
-    $product_add->des        = $request->txtDes;
-
-    $product_add->save();
-        // Cập nhật lại Product_ID Anh chi tiet
-    $detail_imgs = Product_Images::where('product_id', $temp_id)->get();
-    if($detail_imgs->first()) {
-        foreach ($detail_imgs as $item) {
-            $detail_img = Product_Images::find($item->id);
-            $detail_img->product_id = $product_add->id;
-            $detail_img->save();
         }
-    }
-    if (($request->customUrl) == 'on') { 
+        $product_add->seo_title = $request->iptSeoTitle;
+        $product_add->des = $request->txtDes;
+
+        $product_add->save();
+        // Cập nhật lại Product_ID Anh chi tiet
+        $detail_imgs = Product_Images::where('product_id', $temp_id)->get();
+        if($detail_imgs->first()) {
+        foreach ($detail_imgs as $item) {
+        $detail_img = Product_Images::find($item->id);
+        $detail_img->product_id = $product_add->id;
+        $detail_img->save();
+        }
+        }
+        if (($request->customUrl) == 'on') {
         $product_add->slug = $request->iptCustomSlug;
         $product_add->custom_url = 1;
-    } else {
+        } else {
         $product_add->slug = null;
         $product_add->update(['name' => $request->iptName]);
-    }
+        }
         // end tags
-    $product_add->save();
-    Session::flash('success', 'Tạo sản phẩm thành công !');
-    return redirect()->route('admin.product.list');       
-}
+        $product_add->save();
+        Session::flash('success', 'Tạo sản phẩm thành công !');
+        return redirect()->route('admin.product.list');
+        }
 
-}
+        }

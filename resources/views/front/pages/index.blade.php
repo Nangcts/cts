@@ -95,51 +95,31 @@ $categories = App\Category::GetRootCategories();
 ?>
 @foreach ($categories as $catalog)
 <?php
-//  Lấy tất cả sản phẩm cùng danh mục, sắp xếp theo sort_order_1
-$baseQuery = App\Product::whereHas('categories', function($query) use ($catalog) {
+// Lấy tất cả sản phẩm theo danh mục, sắp xếp sort_order_1 tăng dần
+$products = App\Product::whereHas('categories', function($query) use ($catalog) {
     $query->where('categories.id', $catalog->id);
-})->orderBy('sort_order_1', 'asc');
+})->orderBy('sort_order_1', 'asc')->take(15)->get();
 
-//  Lọc và phân nhóm theo độ ưu tiên
-$products = $baseQuery->get()->sortBy(function($product) use ($catalog) {
-    // Tên chính xác
-    if (strtolower($product->name) === strtolower($catalog->name)) {
-        return 0;
-    }
-    
-    // Chứa toàn bộ tên danh mục
-    if (stripos($product->name, $catalog->name) !== false) {
-        return 1;
-    }
-    
-  //Chứa từ khóa thành phần
-    $keywords = explode(' ', $catalog->name);
-    foreach ($keywords as $keyword) {
-        if (strlen($keyword) > 3 && stripos($product->name, $keyword) !== false) {
-            return 2;
-        }
-    }
-
-    return 3;
-})->take(15); 
 ?>
-@if($products->first())
+@if($products->count())
 <section class="section-dns-default bg-white">
-    <!-- Phần còn lại giữ nguyên -->
     <div class="container">
         <div class="row">
-            <div class="title-relative ">
-                <h4 class="title_block left-title ">
-                    <a href="{{ route('allRoute',$catalog->slug) }}" title="{{ $catalog->name }}"><i class="fa icofont icofont-{{ $catalog->icon }} left" ></i>   {{ $catalog->name }}</a>
+            <div class="title-relative">
+                <h4 class="title_block left-title">
+                    <a href="{{ route('allRoute', $catalog->slug) }}" title="{{ $catalog->name }}">
+                        <i class="fa icofont icofont-{{ $catalog->icon }} left"></i> {{ $catalog->name }}
+                    </a>
                 </h4>
                 <div class="right-sub-category hidden-xs">
-                    <a href="{{ route('allRoute',$catalog->slug) }}" class="read-all"><i class="fa fa-plus"></i>Xem tất cả</a>
+                    <a href="{{ route('allRoute', $catalog->slug) }}" class="read-all">
+                        <i class="fa fa-plus"></i> Xem tất cả
+                    </a>
                 </div>
             </div>
             <div class="product-list-wrap">
                 @foreach ($products as $item)
                 <div class="item col-sm-3 col-xs-6 product-item">
-                    
                     <article class="" itemtype="http://schema.org/Product">
                         <div class="thumbnail-container">
                             <div class="product-image">
@@ -167,12 +147,22 @@ $products = $baseQuery->get()->sortBy(function($product) use ($catalog) {
                                         </div>
                                     </div>
                                 </div>
-                                <h3 class="h3 product-title" itemprop="name"><a href="{{ route('allRoute', $item->slug) }}" title="{{ $item->name }}">{{ $item->name }}</a></h3>
-                                <div class="product-price-and-shipping ">
-                                    <span class="price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-                                        <span itemprop="priceCurrency" content="VNĐ" @if($item->sale_price) class ="old-price" @endif >@if($item->price == 0) Liên hệ @else {{ formatPrice($item->price) }}đ @endif</span>
+                                <h3 class="h3 product-title" itemprop="name">
+                                    <a href="{{ route('allRoute', $item->slug) }}" title="{{ $item->name }}">{{ $item->name }}</a>
+                                </h3>
+                                <div class="product-price-and-shipping">
+                                    <span class="price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                        <span itemprop="priceCurrency" content="VNĐ" @if($item->sale_price) class="old-price" @endif>
+                                            @if($item->price == 0) 
+                                                Liên hệ 
+                                            @else 
+                                                {{ formatPrice($item->price) }}đ 
+                                            @endif
+                                        </span>
                                         @if($item->sale_price)
-                                        <span itemprop="price" content="{{ formatPrice($item->sale_price) }}">  {{ formatPrice($item->sale_price) }}đ</span>
+                                            <span itemprop="price" content="{{ formatPrice($item->sale_price) }}">
+                                                {{ formatPrice($item->sale_price) }}đ
+                                            </span>
                                         @endif
                                     </span>
                                 </div>
@@ -193,6 +183,7 @@ $products = $baseQuery->get()->sortBy(function($product) use ($catalog) {
 </section>
 @endif
 @endforeach
+
 <section class="section-dns-default bg-gray">
     <div class="container">
         <div class="row-news">

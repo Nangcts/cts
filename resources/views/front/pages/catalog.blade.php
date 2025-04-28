@@ -67,38 +67,23 @@
             <div class="product-list-wrap clearfix">
                 <div class="product-list-wrap clearfix">
                     @php
-                    use Illuminate\Support\Str;
-
+                    // Lấy tất cả sản phẩm theo danh mục mà không sắp xếp
                     $allProducts = App\Product::whereHas('categories', function($query) use ($catalog) {
-                    $query->where('categories.id', $catalog->id);
+                        $query->where('categories.id', $catalog->id);
                     })
-                    ->orderBy('sort_order_1', 'asc')
+                    ->orderBy('sort_order_1', 'asc') // Thứ tự sắp xếp mặc định
                     ->get();
 
-
-                    $sortedProducts = $allProducts->sortBy(function($product) use ($catalog) {
-                    if (strtolower($product->name) === strtolower($catalog->name)) return 0;
-                    elseif (Str::contains(strtolower($product->name), strtolower($catalog->name))) return 1;
-
-                    $keywords = explode(' ', $catalog->name);
-                    foreach ($keywords as $keyword) {
-                    if (strlen($keyword) > 3 && Str::contains(strtolower($product->name), strtolower($keyword))) {
-                    return 2;
-                    }
-                    }
-                    return 3;
-                    });
-
-
+                    // Phân trang các sản phẩm
                     $page = request()->get('page', 1);
                     $perPage = 30;
-                    $currentPageItems = $sortedProducts->slice(($page - 1) * $perPage, $perPage);
+                    $currentPageItems = $allProducts->slice(($page - 1) * $perPage, $perPage);
                     $products = new \Illuminate\Pagination\LengthAwarePaginator(
-                    $currentPageItems,
-                    $sortedProducts->count(),
-                    $perPage,
-                    $page,
-                    ['path' => request()->url()]
+                        $currentPageItems,
+                        $allProducts->count(),
+                        $perPage,
+                        $page,
+                        ['path' => request()->url()]
                     );
                     @endphp
 
@@ -168,4 +153,4 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection

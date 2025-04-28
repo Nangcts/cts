@@ -249,99 +249,69 @@
             </div>
         </div>
 </section>
-<section class="section-dns-default bg-white">
-    <div class="container">
-        <div class="row">
-            <h4 class="title_block clearfix">
-                Sản phẩm tương tự
-            </h4>
-            <div class="product-list-wrap related-products clearfix">
-                @php
-                use Illuminate\Support\Str;
-                $relatedProducts = App\Product::whereHas('categories', function($query) use ($catalog) {
-                        $query->where('categories.id', $catalog->id);
-                    })
-                    ->where('id', '!=', $product->id) 
-                    ->orderBy('sort_order_1', 'asc')
-                    ->take(20) // Lấy nhiều hơn để có thể lọc
-                    ->get();
+@php
 
-                $sortedProducts = $relatedProducts->sortBy(function($item) use ($product) {
+$directCategory = $product->categories()->first();
 
-                    if (strtolower($item->name) === strtolower($product->name)) {
-                        return 0;
-                    }
+if ($directCategory) {
+    $relatedProducts = App\Product::whereHas('categories', function($query) use ($directCategory) {
+        $query->where('categories.id', $directCategory->id);
+    })
+    ->where('id', '!=', $product->id)
+    ->get();
+    $sortedProducts = $relatedProducts->sortBy(function($item) use ($product) {
+        similar_text(strtolower($item->name), strtolower($product->name), $percent);
+        return -$percent;
+    });
+    if ($sortedProducts->isNotEmpty()) {
+        $displayProducts = $sortedProducts->take(10);
+    }
+}
+@endphp
 
-                    if (Str::contains(strtolower($item->name), strtolower($product->name))) {
-                        return 1;
-                    }
-
-                
-                    $keywords = explode(' ', $product->name);
-                    foreach ($keywords as $keyword) {
-                        if (strlen($keyword) > 3 && Str::contains(strtolower($item->name), strtolower($keyword))) {
-                            return 3;
-                        }
-                    }
-                    
-                    // Ưu tiên 5: Các sản phẩm khác cùng danh mục
-                    return 4;
-                })->take(10); 
-                @endphp
-
-                @foreach ($sortedProducts as $item)
-                <div class="item col-sm-3 col-xs-6 product-item">
-                    <article class="" itemtype="http://schema.org/Product">
-                        <div class="thumbnail-container">
-                            <div class="product-image">
-                                <a href="{{ route('allRoute', $item->slug) }}" class="product-thumbnail">
-                                    <img class="img-fluid" src="{{ asset('upload/filemanager/product/'.$item->image) }}" alt="{{ $item->image }}">
-                                </a>
-                                <div class="quickview hidden-md-down">
-                                    <a href="{{ route('allRoute', $item->slug) }}" class="quick-view btn-product btn" data-link-action="quickview">
-                                        <span class="dns-quickview-bt-loading"></span>
-                                        <span class="dns-quickview-bt-content">
-                                            <i class="fa fa-search-plus"></i> <span class="title-button">Chi tiết</span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="leo-list-product-reviews">
-                                    <div class="leo-list-product-reviews-wraper">
-                                        <div class="star_content clearfix">
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                            <div class="star"></div>
-                                            <div class="star"></div>
+@if(isset($displayProducts) && $displayProducts->isNotEmpty())
+    <section class="section-dns-default bg-white">
+        <div class="container">
+            <div class="row">
+                <h4 class="title_block clearfix">
+                    Sản phẩm khác cùng thương hiệu 
+                </h4>
+                <div class="product-list-wrap related-products clearfix">
+                    @foreach ($displayProducts as $item)
+                        {{-- Hiển thị thông tin sản phẩm --}}
+                        <div class="item col-sm-3 col-xs-6 product-item">
+                            <article itemtype="http://schema.org/Product">
+                                <div class="thumbnail-container">
+                                    <div class="product-image">
+                                        <a href="{{ route('allRoute', $item->slug) }}" class="product-thumbnail">
+                                            <img class="img-fluid" src="{{ asset('upload/filemanager/product/'.$item->image) }}" alt="{{ $item->image }}">
+                                        </a>
+                                    </div>
+                                    <div class="product-meta">
+                                        <h3 class="h3 product-title">
+                                            <a href="{{ route('allRoute', $item->slug) }}">{{ $item->name }}</a>
+                                        </h3>
+                                        <div class="product-price-and-shipping">
+                                            <span class="price">
+                                                @if($item->price == 0)
+                                                    Liên hệ
+                                                @else
+                                                    {{ formatPrice($item->price) }}đ
+                                                @endif
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                <h3 class="h3 product-title" itemprop="name"><a href="{{ route('allRoute', $item->slug) }}" title="{{ $item->name }}">{{ $item->name }}</a></h3>
-                                <div class="product-price-and-shipping ">
-                                    <span class="price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-                                        <span itemprop="priceCurrency" content="VNĐ" @if($item->sale_price) class ="old-price" @endif >@if($item->price == 0) Liên hệ @else {{ formatPrice($item->price) }}đ @endif</span>
-                                        @if($item->sale_price)
-                                        <span itemprop="price" content="{{ formatPrice($item->sale_price) }}"> - {{ formatPrice($item->sale_price) }}đ</span>
-                                        @endif
-                                    </span>
-                                </div>
-
-                                <ul class="product-flags">
-                                    @if($item->sale_price)
-                                    <li class="product-flag new">Sale</li>
-                                    @endif
-                                </ul>
-                            </div>
+                            </article>
                         </div>
-                    </article>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
         </div>
-    </div>
-</section>
+    </section>
+@endif
+
+
 @endsection
 @section('js')
 <script src="{{ asset('assets/owl-thumbs/dist/owl.carousel2.thumbs.js') }}"></script>
