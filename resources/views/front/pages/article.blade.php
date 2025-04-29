@@ -59,4 +59,5 @@ gray-body
         @include('front.blocks.sidebar')
     </div>
 </div>
+
 @endsection

@@ -344,6 +344,9 @@ Route::get('delete/cart',['as'=>'deletecart','uses' => 'FrontController@getDelet
 Route::get('update/{rowId}/{qty}', ['as' => 'updateCart','uses' => 'FrontController@updateCart']);
 Route::get('remove/{rowId}', ['as' => 'removeCart','uses' => 'FrontController@removeCart']);
 Route::post('checkout', ['as' => 'checkout', 'uses' => 'FrontController@checkout']);
+Route::get('/front/pages/checkout_success', ['as' => 'checkout.success', 'uses' => 'FrontController@checkoutSuccess']);
+
+
 // Tìm kiếm
 Route::post('email-submit', ['as' => 'email.submit', 'uses' => 'FrontController@emailSubmit']);
 Route::post('uploadImg', ['as' => 'uploadImage','uses' => 'ProductController@postImages']); 

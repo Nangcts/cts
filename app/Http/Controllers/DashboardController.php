@@ -21,42 +21,80 @@ use App\Libraries\GoogleAnalytics;
 class DashboardController extends Controller
 {
 	public function getDashboard() {
-		$data_analytics['active'] = Analytics::getAnalyticsService()->data_realtime->get('ga:'.env('ANALYTICS_VIEW_ID'), 'rt:activeVisitors')->totalsForAllResults['rt:activeVisitors'];
-		
-		$data_analytics['total_page_views'] = Analytics::fetchTotalVisitorsAndPageViews(Period::days(10));
-		
-		$data_analytics['today'] = Analytics::fetchTotalVisitorsAndPageViews(Period::days(0));
-		
-
-        if (!$data_analytics['today']){
-            $data_analytics['today'] = $data_analytics['today'][0];
-        } else {
-            $data_analytics['today'] = 0;
-        }
-		
-		
-		$data_analytics['top_visited_pages'] = Analytics::fetchMostVisitedPages(Period::days(7), 6);
-		
-		$data_analytics['devices'] = GoogleAnalytics::fetchDeviceVisitors(Period::days(29));
-		$data_analytics['organic_search'] = GoogleAnalytics::fetchOrganicSearch(Period::days(29));
-		$data_analytics['month_visitor'] = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));
-		$data_analytics['month_visitor'] = $data_analytics['month_visitor']->sum('visitors');
-        
-		$startDate =  \Carbon\Carbon::now()->startOfMonth();
-		$endDate = new \Carbon\Carbon('now');
-        
-		if($startDate == $endDate) {
-			$data_analytics['month_visitors'] = Analytics::fetchTotalVisitorsAndPageViews(Period::day(0));
-		} else {
-			$data_analytics['month_visitors'] = Analytics::fetchTotalVisitorsAndPageViews(Period::create($startDate, $endDate));
+		$data_analytics = [];
+	
+		try {
+			$data_analytics['active'] = Analytics::getAnalyticsService()->data_realtime->get(
+				'properties/' . env('ANALYTICS_MEASUREMENT_ID') . '/realtime',
+				'rt:activeVisitors'
+			);
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (active): ' . $e->getMessage());
+			$data_analytics['active'] = null;
 		}
-		$data_analytics['month_visitors'] = $data_analytics['month_visitors']->sum('visitors');
-		
-		
-
+	
+		try {
+			$data_analytics['total_page_views'] = Analytics::fetchTotalVisitorsAndPageViews(Period::days(10));
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (total_page_views): ' . $e->getMessage());
+			$data_analytics['total_page_views'] = collect();
+		}
+	
+		try {
+			$today = Analytics::fetchTotalVisitorsAndPageViews(Period::days(0));
+			$data_analytics['today'] = $today[0] ?? 0;
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (today): ' . $e->getMessage());
+			$data_analytics['today'] = 0;
+		}
+	
+		try {
+			$data_analytics['top_visited_pages'] = Analytics::fetchMostVisitedPages(Period::days(7), 6);
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (top_visited_pages): ' . $e->getMessage());
+			$data_analytics['top_visited_pages'] = collect();
+		}
+	
+		try {
+			$data_analytics['devices'] = GoogleAnalytics::fetchDeviceVisitors(Period::days(29));
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (devices): ' . $e->getMessage());
+			$data_analytics['devices'] = collect();
+		}
+	
+		try {
+			$data_analytics['organic_search'] = GoogleAnalytics::fetchOrganicSearch(Period::days(29));
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (organic_search): ' . $e->getMessage());
+			$data_analytics['organic_search'] = collect();
+		}
+	
+		try {
+			$monthData = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));
+			$data_analytics['month_visitor'] = $monthData->sum('visitors');
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (month_visitor): ' . $e->getMessage());
+			$data_analytics['month_visitor'] = 0;
+		}
+	
+		$startDate = \Carbon\Carbon::now()->startOfMonth();
+		$endDate = \Carbon\Carbon::now();
+	
+		try {
+			if ($startDate == $endDate) {
+				$monthVisitors = Analytics::fetchTotalVisitorsAndPageViews(Period::day(0));
+			} else {
+				$monthVisitors = Analytics::fetchTotalVisitorsAndPageViews(Period::create($startDate, $endDate));
+			}
+			$data_analytics['month_visitors'] = $monthVisitors->sum('visitors');
+		} catch (\Exception $e) {
+			\Log::warning('Analytics error (month_visitors): ' . $e->getMessage());
+			$data_analytics['month_visitors'] = 0;
+		}
+	
 		return view('admin.dashboard.dashboard', compact('data_analytics'));
 	}
-
+	
 
 
 	public function fetchDeviceVisitors(Period $period): Collection

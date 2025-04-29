@@ -38,20 +38,9 @@ class FrontController extends Controller
     {
         return view('front.pages.videos');
     }
-    public function showObhMilk ()
-    {
-        return view('front.pages.obh_milk');
-    }
 
-    public function showHauOB ()
-    {
-        return view('front.pages.hau_obh');
-    }
 
-    public function showComOBH ()
-    {
-        return view('front.pages.com_obh');
-    }
+    
 
     public function refreshCaptcha()
     {
@@ -447,11 +436,18 @@ public function checkout(Request $request) {
 
     $config = DB::table('config')->first();
     $trans = $request;
+    try {
+        
     Mail::send('front.email.adminEmail',['trans'=>$trans, 'transaction' => $transaction], function($msg) use ($trans, $transaction, $config) {
         $msg->from('namdangit@gmail.com',$config->site_title);
         $msg->to($config->email,'Đơn đặt hàng mới')->subject('Đơn đặt hàng mới từ website '. $config->site_title .' !');
 
     });
+} catch (\Exception $e) {
+    // Nếu có lỗi gửi email thì ghi log hoặc bỏ qua
+    \Log::error('Lỗi gửi email: ' . $e->getMessage());
+
+}
         // Gửi email cho khách
 
     // Mail::send('front.email.customerEmail',['trans'=>$trans, 'transaction' => $transaction], function($msg) use ($trans, $config) {
@@ -459,14 +455,19 @@ public function checkout(Request $request) {
     //     $msg->to($trans->iptEmail,'Đơn đặt hàng mới của bạn')->subject('Đơn đặt hàng mới của bạn tại website '. $config->site_title .' !');
 
     // });
-
+    Cart::destroy();
     Session::flash('success','Đặt hàng thành công! Chúng tôi sẽ liên hệ lại với bạn sớm nhất !');
-    return back();
+    return redirect()->route('checkout.success');
 }
 public function removeCart($rowId) {
     Cart::remove($rowId);
     return redirect()->route('cart');
 }
+public function checkoutSuccess()
+{
+    return view('front.pages.checkout_success');
+}
+
 public function getContact ()
 {
     return view('front.pages.contact');

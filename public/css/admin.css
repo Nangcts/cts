@@ -4065,3 +4065,15 @@ h3.filter-tile {
     overflow: auto;
     margin-top: -20px;
 }
+a#sort-button {
+    border: 1px solid;
+}
+a#sort-button:hover {
+    background-color: rgb(66, 66, 231);
+    color: white;
+    border: none;
+}
+.more-link a.btn.btn-xs {
+    float: right;
+    margin-right: 40px;
+}

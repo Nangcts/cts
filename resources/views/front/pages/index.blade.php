@@ -189,7 +189,7 @@ $products = App\Product::whereHas('categories', function($query) use ($catalog) 
         <div class="row-news">
             <div class="wrap">
                 <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                    <h2 class="section_title">Khuyến mãi - Tin tức</h2>
+                    <h2 class="section_title" style="color:black;padding-left:22px">   Tin tức mới nhất</h2>
                 </div>
 
                 <?php  
