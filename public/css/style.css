@@ -2829,7 +2829,7 @@ body.home-page #main-menu .menu_products ul.ruby-menu > li.home > a {
 .mobile-sidebar {
 	display: none;
 }
-@media (max-width: 1050px) {
+@media (max-width: 600px) {
 	header {
 	position: fixed;
 	top: 0;
@@ -2877,13 +2877,25 @@ ul.right-top-header{
 	}
 	
 }
-
+@media (min-width:601px) and (max-width:1190px) {
+	.col-lg-3.categories-menu.hidden-xs {
+		display: none;
+	}
+	.col-lg-9.slider.col-xs-12, #main-menu .container, #slider .container {
+		width: 100%;
+	}
+	#main-menu ul.ruby-menu > li > a {
+		padding: 0 15px;
+	}
+	
+}
 @media (pointer: coarse) {
     .ruby-grid.ruby-grid-lined {
         min-height: 300px; 
     }
 }
 @media (min-width:800px) and (max-width:1190px) {
+	
 	.ruby-grid.ruby-grid-lined {
 		display: block;
 		max-height: 0;
@@ -3039,17 +3051,3 @@ ul.right-top-header{
 a.btn.btn-info.pull-right {
 	margin: 0 12px;
 }
-
-
-/* .pager li>a {
-	border-radius: 4px;
-}
-.pagination>li:first-child>span {
-	
-	border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-.pagination>li:last-child>span {
-	border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-} */
