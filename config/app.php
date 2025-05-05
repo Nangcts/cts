@@ -161,7 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         \Conner\Tagging\Providers\TaggingServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
+      
 
     ],
 
