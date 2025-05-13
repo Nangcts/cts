@@ -1,6 +1,15 @@
 /node_modules
 /public/hot
 /public/storage
+/public/upload/
+/public/public
+/public/images
+/public/tmp/
+/public/assects
+/public/vendor
+/public/.well-known
+
+/public/*.rar
 /storage/*.key
 /vendor
 /.idea
