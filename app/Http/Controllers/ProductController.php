@@ -257,22 +257,43 @@ class ProductController extends Controller
 {
     $categories = Category::all();
     $categoryId = $request->input('category_id');
+    $offer_products = collect();
 
-    $offer_products = Product::when($categoryId, function ($query) use ($categoryId) {
-        return $query->whereHas('categories', function ($q) use ($categoryId) {
-            $q->where('categories.id', $categoryId);
-        });
-    })->orderBy('sort_order_1', 'asc')->get();
-    
+    if ($categoryId) {
+        // Gọi hàm với $pagi rất lớn để lấy tất cả sản phẩm
+        $products_paginated = getAllProductsCategory($categoryId, 999999);
 
-    // Nếu yêu cầu là AJAX thì chỉ trả về phần HTML của danh sách sản phẩm
+        // Bỏ phân trang, chỉ lấy Collection gốc
+        $offer_products = collect($products_paginated->items())->sortBy('sort_order_1')->values();
+    }
+
     if ($request->ajax()) {
         return view('admin.product.product_list', compact('offer_products'))->render();
     }
 
-    // Nếu là truy cập ban đầu (không AJAX), trả về toàn bộ view
     return view('admin.product.sort_offer_products', compact('offer_products', 'categories'));
 }
+
+//     public function showSortOfferProducts(Request $request)
+// {
+//     $categories = Category::all();
+//     $categoryId = $request->input('category_id');
+
+//     $offer_products = Product::when($categoryId, function ($query) use ($categoryId) {
+//         return $query->whereHas('categories', function ($q) use ($categoryId) {
+//             $q->where('categories.id', $categoryId);
+//         });
+//     })->orderBy('sort_order_1', 'asc')->get();
+    
+
+//     // Nếu yêu cầu là AJAX thì chỉ trả về phần HTML của danh sách sản phẩm
+//     if ($request->ajax()) {
+//         return view('admin.product.product_list', compact('offer_products'))->render();
+//     }
+
+//     // Nếu là truy cập ban đầu (không AJAX), trả về toàn bộ view
+//     return view('admin.product.sort_offer_products', compact('offer_products', 'categories'));
+// }
 
     public function postEditProduct(Request $request, $id) 
     {

@@ -167,7 +167,7 @@ class CategoryController extends Controller
 	}
 	public function sortOfferProducts($category_id = null)
 {
-    // Lấy danh sách danh mục cha, kèm danh mục con
+
     $categories = Category::whereNull('parent_id')
                           ->with(['children' => function ($q) {
                               $q->orderBy('sort_order', 'asc');
@@ -175,7 +175,6 @@ class CategoryController extends Controller
                           ->orderBy('sort_order', 'asc')
                           ->get();
 
-    // Lấy sản phẩm nếu có truyền danh mục con
     $products = collect();
     if ($category_id) {
         $products = Product::where('catalog_id', $category_id)
@@ -187,7 +186,7 @@ class CategoryController extends Controller
 }
 public function index()
 {
-    $categories = Category::all(); // hoặc thêm điều kiện nếu cần
+    $categories = Category::all();
 
     return view('admin.product.sort_offer_products', compact('categories'));
 }

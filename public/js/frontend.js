@@ -418,3 +418,4 @@ $(document).ready(function () {
         };
         initEvents();
     });
+

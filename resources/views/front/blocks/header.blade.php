@@ -337,6 +337,23 @@ document.addEventListener('DOMContentLoaded', function () {
     
 </script>
 
+<!-- <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const pageDiv = document.querySelector("div.mm-page.mm-slideout");
+    const header = document.querySelector("header");
+
+    if (pageDiv && header) {
+        const minHeight = parseInt(window.getComputedStyle(pageDiv).minHeight);
+        const isMobile = window.innerWidth <= 768;
+
+        if (minHeight === 932 && isMobile) {
+            header.style.top = "-177px";
+        }
+    }
+});
+</script> -->
+
+
 
 
 

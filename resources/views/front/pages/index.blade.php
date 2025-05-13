@@ -37,7 +37,7 @@ home-page
                 <h2 class="section_title">Sản phẩm nổi bật</h2>
             </div>
             <div class="product-list-wrap">
-                @foreach (App\Product::where('hot',1)->orderBy('sort_order_1','asc')->take(15)->get() as $item)
+                @foreach (App\Product::where('hot',1)->orderBy('sort_order_1','asc')->take(20)->get() as $item)
                 <div class="item col-sm-3 col-xs-6 product-item">
                     <article class="" itemtype="http://schema.org/Product">
                         <div class="thumbnail-container">
@@ -95,11 +95,11 @@ $categories = App\Category::GetRootCategories();
 ?>
 @foreach ($categories as $catalog)
 <?php
-// Lấy tất cả sản phẩm theo danh mục, sắp xếp sort_order_1 tăng dần
-$products = App\Product::whereHas('categories', function($query) use ($catalog) {
-    $query->where('categories.id', $catalog->id);
-})->orderBy('sort_order_1', 'asc')->take(15)->get();
-
+$products_all = getAllProductsCategory($catalog->id, 999999);
+$products = collect($products_all->items())
+                ->sortBy('sort_order_1') 
+                ->take(20) 
+                ->values(); 
 ?>
 @if($products->count())
 <section class="section-dns-default bg-white">

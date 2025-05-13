@@ -5,7 +5,7 @@
 
 html, body {
 	max-width: 100vw;
-	overflow-x: hidden; /* Ngăn trang tràn ngang */
+	overflow-x: hidden; 
   }
   
 body {
@@ -2767,7 +2767,7 @@ img {
 	border: 1.5px solid rgb(95, 186, 243);
 	transition: all 0.3s ease;
 	transform: translateY(-5px);
-	border-radius: 14px;
+	/* border-radius: 14px; */
  }
  .read-all {
 	color: white;
@@ -3013,7 +3013,6 @@ ul.right-top-header{
     border-left: 1px solid #ddd;
 }
 
-/* Hiệu ứng khi click */
 .qty-box span:active {
     transform: scale(0.95);
     background: #dee2e6;
@@ -3022,8 +3021,21 @@ ul.right-top-header{
 /* Responsive cho mobile */
 @media (max-width: 576px) {
 	section#slider {
-		margin-top: 177px;
+		padding-top: 177px;
 	}
+	.section_title {
+		margin-top: 85px;
+	}
+	.owl-carousel.col-lg-12.owl-loaded.owl-drag {
+		margin-top: 70px;
+	}
+	.mm-menu.mm-offcanvas.mm-opened {
+		z-index: 99;
+	}
+	.col-md-12.col-sm-12.col-xs-12.text-center
+ {
+    margin-top: -87px;
+}
 	#slider .container {
 		width: 100%;
 		padding:0 5px;

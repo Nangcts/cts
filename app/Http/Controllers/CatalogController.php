@@ -116,13 +116,13 @@ class CatalogController extends Controller
         return redirect()->route('admin.getNested');
     }
     public function getDeleteCatalog ($id) {
-        // kiểm tra xem có danh mục con hay không
+        
         $check_chid = DB::table('catalog')->where('parent_id',$id)->count();
         if ($check_chid > 0) {
             Session::flash('error','Danh mục có chứa danh mục con, bạn không thể xóa !');
             return redirect()->route('admin.getNested');
         } else {
-            // Kiểm tra xem có Sản phẩm trong danh mục không
+           
             $check_product = DB::table('products')->where('catalog_id',$id)->count();
             if ($check_product > 0) {
                 Session::flash('error','Không thể xóa danh mục này !');
